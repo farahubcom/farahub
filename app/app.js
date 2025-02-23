@@ -1,4 +1,4 @@
-const Application = require('../foundation/Application');
+const { Application } = require('farahub');
 
 
 /**
