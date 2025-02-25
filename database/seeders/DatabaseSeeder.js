@@ -1,4 +1,5 @@
-const Seeder = require('../../foundation/Seeder');
+const { Seeder } = require("@farahub/framework/foundation");
+
 
 
 class DatabaseSeeder extends Seeder {

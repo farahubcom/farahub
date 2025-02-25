@@ -11,7 +11,12 @@
     "seed": "cross-env NODE_ENV=development node database/seeders/main.js"
   },
   "dependencies": {
-    "@farahub/framework": "^1.0.1",
+    "@farahub/framework": "^1.0.3",
+    "@farahub/permissions": "^1.0.0",
+    "@farahub/roles": "^1.0.0",
+    "@farahub/notifications": "^1.0.0",
+    "@farahub/activities": "^1.0.0",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.1"
   }
 }
