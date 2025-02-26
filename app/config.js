@@ -20,17 +20,15 @@ const config = {
      * @var Module[]
      */
     modules: [
-        require('@farahub/notifications'),
         require('@farahub/activities'),
-
+        require('@farahub/authentication'),
+        require('@farahub/categories'),
+        require('@farahub/core'),
+        require('@farahub/notifications'),
         require('@farahub/permissions'),
         require('@farahub/roles'),
-
-        // require('../modules/authentication/module'),
-        // require('../modules/core/module'),
-        // require('../modules/sms/module'),
-        // require('../modules/subscription/module'),
-        // require('../modules/categories/module'),
+        require('@farahub/sms'),
+        require('@farahub/subscription'),
         // -- require('../modules/online-payment/module'),
         // require('../modules/storage/module'),
 
@@ -46,15 +44,14 @@ const config = {
     coreModules: [
         'Permissions',
         'Roles',
-        // 'Subscription',
-        // 'Categories',
+        'Subscription',
+        'Categories',
         // -- 'Online-Payment',
-        // 'Core',
+        'Core',
         // 'Storage',
 
-        // // Authentication module with dependencies
-        // 'Sms',
-        // 'Authentication',
+        'Sms',
+        'Authentication',
     ],
 
     /**
@@ -63,9 +60,8 @@ const config = {
      * @var string[]
      */
     defaultModules: [
-        // 'Metas',
-        // 'Notifications',
-        // 'Activities',
+        'Notifications',
+        'Activities',
     ],
 
     //
