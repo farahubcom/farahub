@@ -1,3 +1,12 @@
+/**
+ * Register dotenv
+ */
+require('dotenv').config();
+
+
+/**
+ * Require Farahub app
+ */
 const { Application } = require('@farahub/framework/foundation');
 
 
@@ -21,9 +30,3 @@ const app = new Application();
  * Make the application
  */
 app.make(config);
-
-
-/**
- * Export the application
- */
-module.exports = app;

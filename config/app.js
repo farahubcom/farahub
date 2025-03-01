@@ -1,4 +1,4 @@
-const config = {
+module.exports = {
 
     /**
      * The application hostname
@@ -23,7 +23,6 @@ const config = {
         require('@farahub/activities'),
         require('@farahub/authentication'),
         require('@farahub/categories'),
-        require('@farahub/core'),
         require('@farahub/notifications'),
         require('@farahub/permissions'),
         require('@farahub/roles'),
@@ -31,9 +30,11 @@ const config = {
         require('@farahub/subscription'),
         // -- require('../modules/online-payment/module'),
         // require('../modules/storage/module'),
-
+        
         // require('../modules/tickets/module'),
         // require('../modules/documentation/module'),
+        
+        require('../app/module'),
     ],
 
     /**
@@ -47,6 +48,7 @@ const config = {
         'Subscription',
         'Categories',
         // -- 'Online-Payment',
+
         'Core',
         // 'Storage',
 
@@ -63,8 +65,4 @@ const config = {
         'Notifications',
         'Activities',
     ],
-
-    //
 }
-
-module.exports = config;

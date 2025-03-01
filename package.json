@@ -6,22 +6,25 @@
   "license": "MIT",
   "author": "farzinkakh <https://github.com/farzinkakh>",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon app/main.js",
-    "prod": "cross-env NODE_ENV=production pm2 start app/main.js --name farahub -i max --watch --ignore-watch='node_modules'",
+    "dev": "cross-env NODE_ENV=development nodemon main.js",
+    "prod": "cross-env NODE_ENV=production pm2 start main.js --name farahub -i max --watch --ignore-watch='node_modules'",
     "seed": "cross-env NODE_ENV=development node database/seeders/main.js"
   },
   "dependencies": {
     "@farahub/activities": "^1.0.0",
     "@farahub/authentication": "^1.0.0",
     "@farahub/categories": "^1.0.0",
-    "@farahub/core": "^1.0.0",
-    "@farahub/framework": "^1.0.3",
+    "@farahub/framework": "^1.0.6",
     "@farahub/notifications": "^1.0.0",
     "@farahub/permissions": "^1.0.0",
     "@farahub/roles": "^1.0.0",
     "@farahub/sms": "^1.0.0",
     "@farahub/subscription": "^1.0.0",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.3.1",
+    "mongoose-lean-virtuals": "^0.9.0",
+    "unique-slug": "^4.0.0"
   }
 }
