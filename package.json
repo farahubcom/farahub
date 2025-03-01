@@ -14,7 +14,7 @@
     "@farahub/activities": "^1.0.0",
     "@farahub/authentication": "^1.0.0",
     "@farahub/categories": "^1.0.0",
-    "@farahub/framework": "^1.0.6",
+    "@farahub/framework": "^1.0.7",
     "@farahub/notifications": "^1.0.0",
     "@farahub/permissions": "^1.0.0",
     "@farahub/roles": "^1.0.0",

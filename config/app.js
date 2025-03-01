@@ -5,7 +5,14 @@ module.exports = {
      *
      * @var string
      */
-    hostname: process.env.NODE_ENV === 'production' ? 'farahub.com' : 'farahub.local',
+    hostname: process.env.HOST_NAME || 'farahub.local',
+
+    /**
+     * The application http port
+     *
+     * @var number
+     */
+    portHttp: process.env.PORT_HTTP || 8000,
 
     /**
      * Determine if application is in development env
@@ -13,6 +20,13 @@ module.exports = {
      * @var boolean
      */
     dev: process.env.NODE_ENV !== "production",
+
+    /**
+     * Name of the application core database
+     * 
+     * @var string
+     */
+    coreDbName: process.env.CORE_DB_NAME || 'farahub_core',
 
     /**
      * The application modules
@@ -30,10 +44,10 @@ module.exports = {
         require('@farahub/subscription'),
         // -- require('../modules/online-payment/module'),
         // require('../modules/storage/module'),
-        
+
         // require('../modules/tickets/module'),
         // require('../modules/documentation/module'),
-        
+
         require('../app/module'),
     ],
 
