@@ -34,6 +34,7 @@ module.exports = {
      * @var Module[]
      */
     modules: [
+        // Core modules
         require('@farahub/activities'),
         require('@farahub/authentication'),
         require('@farahub/categories'),
@@ -43,11 +44,26 @@ module.exports = {
         require('@farahub/sms'),
         require('@farahub/subscription'),
         // -- require('../modules/online-payment/module'),
-        // require('../modules/storage/module'),
+        require('@farahub/storage'),
 
+
+        // Support modules
         // require('../modules/tickets/module'),
         // require('../modules/documentation/module'),
 
+
+        // Workspaces modules
+        require('@farahub/people'),
+        require('@farahub/products'),
+        require('@farahub/pricing'),
+
+
+        // Bundles
+        require('@farahub/customers-club'),
+        require('@farahub/customers-club-management'),
+
+
+        // App module
         require('../app/module'),
     ],
 
@@ -64,7 +80,7 @@ module.exports = {
         // -- 'Online-Payment',
 
         'Core',
-        // 'Storage',
+        'Storage',
 
         'Sms',
         'Authentication',
