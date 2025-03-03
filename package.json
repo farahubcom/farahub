@@ -26,6 +26,8 @@
     "@farahub/pricing": "^1.0.0",
     "@farahub/customers-club": "^1.0.0",
     "@farahub/customers-club-management": "^1.0.0",
+    "@farahub/invoices": "^1.0.0",
+    "@farahub/transactions": "^1.0.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
     "lodash": "^4.17.21",

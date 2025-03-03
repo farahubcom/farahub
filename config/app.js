@@ -56,6 +56,8 @@ module.exports = {
         require('@farahub/people'),
         require('@farahub/products'),
         require('@farahub/pricing'),
+        require('@farahub/invoices'),
+        require('@farahub/transactions'),
 
 
         // Bundles
