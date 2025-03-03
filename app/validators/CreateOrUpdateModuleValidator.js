@@ -50,20 +50,31 @@ class CreateOrUpdateModuleValidator {
                 },
                 custom: {
                     options: (value, { req }) => {
+                        // Construct the package name
+                        const packageName = `@farahub/${value}`;
 
-                        if (!fs.existsSync(this.app.getModulesPath(value))) {
-                            throw new Error('مسیری با این شناسه وجود ندارد.');
+                        // Read the package.json file
+                        const packageJsonPath = path.join(process.cwd(), 'package.json');
+                        if (!fs.existsSync(packageJsonPath)) {
+                            throw new Error('فایل package.json یافت نشد.');
+                        }
+
+                        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+
+                        // Check if the package exists in dependencies or devDependencies
+                        const dependencies = packageJson.dependencies || {};
+                        const devDependencies = packageJson.devDependencies || {};
+
+                        if (!dependencies[packageName] && !devDependencies[packageName]) {
+                            throw new Error(`پکیج ${packageName} در package.json یافت نشد.`);
                         }
 
                         return true;
-                        // const Module = this.app.model('Module');
-                        // return Doc.resolveByIdentifier(value, Module).then(module => {
-                        //     if (module) {
-                        //         return Promise.reject('شناسه قبلا ثبت شده است.');
-                        //     };
+                        // if (!fs.existsSync(this.app.getModulesPath(value))) {
+                        //     throw new Error('مسیری با این شناسه وجود ندارد.');
+                        // }
 
-                        //     return true;
-                        // });
+                        return true;
                     }
                 },
             },
