@@ -1,0 +1,11 @@
+[
+    {
+      "identifier": "owner",
+      "name": {
+        "en-US": "Owner",
+        "fa-IR": "صاحب"
+      },
+      "immutable": false
+    }
+  ]
+  

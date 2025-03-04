@@ -5,16 +5,33 @@ const DatabaseSeeder = require('./DatabaseSeeder');
  */
 require('dotenv').config();
 
+
 /**
- * Register module alias
+ * Require Farahub app
  */
-require('module-alias/register');
+const { Application } = require('@farahub/framework/foundation');
+
+
+/**
+ * Get application configurations
+ * 
+ * @var Object
+ */
+const config = require('../../config');
+
+
+/**
+ * Create application instance
+ * 
+ * @var Application
+ */
+const app = new Application();
 
 
 /**
  * Make the application
  */
-const app = require('../../app/app');
+app.make(config);
 
 
 /**

@@ -1,0 +1,25 @@
+{
+  "workspace": {
+    "identifier": "farahub-admin",
+    "hostname": "farahub.local",
+    "name": {
+      "fa-IR": "فضای کار مدیریت",
+      "en-US": "Administrator workspace"
+    },
+    "options": {
+      "locale": "fa-IR",
+      "currency": "IRR"
+    }
+  },
+  "members": [
+    {
+      "first_name": "فرزین",
+      "last_name": "عسکریان",
+      "username": "farzinkakh",
+      "phone": "09130447413",
+      "email": "farzinask1996@gmail.com"
+    }
+  ],
+  "modules": [],
+  "automations": []
+}
