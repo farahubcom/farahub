@@ -29,7 +29,8 @@ module.exports = {
     coreDbName: process.env.CORE_DB_NAME || 'farahub_core',
 
     /**
-     * The application modules
+     * All the modules used within the application include their deps
+     * TODO: should resolve and add modules deps automatily later
      *
      * @var Module[]
      */
@@ -61,9 +62,11 @@ module.exports = {
 
 
         // Bundles
-        require('@farahub/customers-club'),
-        require('@farahub/customers-club-management'),
+        // require('@farahub/customers-club'),
+        // require('@farahub/customers-club-management'),
 
+        // App modules (should be package later)
+        require('../modules/accounting/module'),
 
         // App module
         require('../app/module'),

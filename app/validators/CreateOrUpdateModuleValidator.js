@@ -1,9 +1,7 @@
-const mongoose = require("mongoose");
 const fs = require('fs');
+const path = require('path');
 const { Doc } = require("@farahub/framework/facades");
-
-const { ObjectId } = mongoose.Types;
-
+const toLower = require('lodash/toLower');
 
 class CreateOrUpdateModuleValidator {
 
@@ -50,31 +48,24 @@ class CreateOrUpdateModuleValidator {
                 },
                 custom: {
                     options: (value, { req }) => {
-                        // Construct the package name
-                        const packageName = `@farahub/${value}`;
-
-                        // Read the package.json file
-                        const packageJsonPath = path.join(process.cwd(), 'package.json');
-                        if (!fs.existsSync(packageJsonPath)) {
-                            throw new Error('فایل package.json یافت نشد.');
-                        }
-
-                        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-
-                        // Check if the package exists in dependencies or devDependencies
-                        const dependencies = packageJson.dependencies || {};
-                        const devDependencies = packageJson.devDependencies || {};
-
-                        if (!dependencies[packageName] && !devDependencies[packageName]) {
-                            throw new Error(`پکیج ${packageName} در package.json یافت نشد.`);
+                        if (this.app.modules.filter(m => toLower(m.name) == value).length < 1) {
+                            throw new Error(`ماژول با شناسه ${value} وجود ندارد`);
                         }
 
                         return true;
-                        // if (!fs.existsSync(this.app.getModulesPath(value))) {
-                        //     throw new Error('مسیری با این شناسه وجود ندارد.');
+
+                        // // Construct the package name
+                        // const packageName = `@farahub/${value}`;
+
+                        // // Construct the path to the package in node_modules
+                        // const packagePath = path.join(process.cwd(), 'node_modules', packageName);
+
+                        // // Check if the package directory exists
+                        // if (!fs.existsSync(packagePath)) {
+                        //     throw new Error(`پکیج ${packageName} در node_modules یافت نشد.`);
                         // }
 
-                        return true;
+                        // return true;
                     }
                 },
             },
