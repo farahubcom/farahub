@@ -123,7 +123,7 @@ class Workspace {
      * 
      * @return {Promise<Module[]>}
      */
-    async getCurrentModules() {
+    async getCurrentModules(app) {
         try {
             const Module = this.model('Module');
 
@@ -135,8 +135,8 @@ class Workspace {
                 subscriptions.map(
                     async subscription => {
                         const subscribed = await Doc.resolve(subscription.subscribed, Module);
-                        const hereditary = await subscribed.getHereditary();
-                        modulesIds = [...modulesIds, ...hereditary.map(m => m.identifier)];
+                        const hereditary = await subscribed.getHereditary(app);
+                        modulesIds = [...modulesIds, ...hereditary.map(m => m.name)];
                     }
                 )
             )
@@ -145,10 +145,10 @@ class Workspace {
             modulesIds = [...new Set(modulesIds)];
 
             // get modules
-            const modules = await Module.find({ identifier: { $in: modulesIds } });
+            // const modules = await Module.find({ identifier: { $in: modulesIds } });
 
             // return modules
-            return modules;
+            return modulesIds;
         } catch (error) {
             throw error;
         }
@@ -161,9 +161,9 @@ class Workspace {
      * 
      * @returns {Promise<bool>}
      */
-    async hasCurrentModule(identifier) {
+    async hasCurrentModule(app, identifier) {
         try {
-            return (await this.getCurrentModules()).filter(function (module) {
+            return (await this.getCurrentModules(app)).filter(function (module) {
                 return String(module.identifier).toLowerCase() === String(identifier).toLowerCase();
             }).length > 0;
         } catch (error) {
@@ -179,11 +179,11 @@ class Workspace {
      */
     async resolveModulesHereditary(app) {
         try {
-            const currentModules = await this.getCurrentModules();
+            const currentModules = await this.getCurrentModules(app);
             const modules = filter(
                 app.modules,
                 module => includes(
-                    map([...map(currentModules, 'identifier'), ...app.defaultModules], toLower),
+                    map([...currentModules, ...app.defaultModules], toLower),
                     toLower(module.name)
                 )
             );

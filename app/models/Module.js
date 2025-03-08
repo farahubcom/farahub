@@ -1,6 +1,5 @@
 const pick = require("lodash/pick");
 const mongoose = require("mongoose");
-const { Doc } = require("@farahub/framework/facades");
 
 const { ObjectId } = mongoose.Types;
 
@@ -11,23 +10,9 @@ class Module {
      * 
      * @returns {Module[]}
      */
-    async getHereditary() {
-        let result = [this];
-
-        if (this.dependencies && this.dependencies.length > 0) {
-            const Module = this.model('Module');
-            await Promise.all(
-                this.dependencies.map(
-                    async moduleId => {
-                        const module = await Doc.resolve(moduleId, Module);
-                        const hereditary = await module.getHereditary();
-                        result = [...result, ...hereditary];
-                    }
-                )
-            )
-        }
-
-        return result;
+    async getHereditary(app) {
+        const module = app.module(this.identifier);
+        return module.getHereditaryDependencies();
     }
 
     /**

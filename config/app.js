@@ -66,6 +66,7 @@ module.exports = {
         // require('@farahub/customers-club-management'),
 
         // App modules (should be package later)
+        require('../modules/accounting-documents/module'),
         require('../modules/accounting/module'),
 
         // App module

@@ -31,6 +31,21 @@ class AccountingModule extends Module {
     basePath = '';
 
     /**
+     * The module dependencies
+     * 
+     * @var array
+     */
+    dependencies = [
+        'People',
+        'Roles',
+        'Permissions',
+        'Products',
+        'Categories',
+        'Invoices',
+        'Accounting-Documents',
+    ];
+
+    /**
      * The module hooks
      * 
      * @var object

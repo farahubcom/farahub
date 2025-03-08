@@ -120,7 +120,7 @@ class WorkspaceController extends Controller {
 
                     const Module = this.app.connection.model('Module');
 
-                    const modules = await req.workspace.getCurrentModules();
+                    const modules = await req.workspace.getCurrentModules(this.app);
 
                     const args = req.query;
 

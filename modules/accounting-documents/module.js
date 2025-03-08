@@ -3,17 +3,16 @@ const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
 const hooks = require('./hooks');
-const sockets = require('./sockets');
 
 
-class AppModule extends Module {
+class AccountingDocumentsModule extends Module {
 
     /**
      * The module name
      * 
      * @var string
      */
-    name = 'Core';
+    name = 'Accounting-Documents';
 
     /**
      * The module version
@@ -36,19 +35,7 @@ class AppModule extends Module {
      * 
      * @var array
      */
-    dependencies = [
-        'Permissions',
-        'Roles',
-        'Subscription',
-        'Categories',
-        // -- 'Online-Payment',
-
-        'Core',
-        'Storage',
-
-        'Sms',
-        'Authentication',
-    ];
+    dependencies = [];
 
     /**
      * The module hooks
@@ -74,9 +61,8 @@ class AppModule extends Module {
      * @return void
      */
     boot() {
-        this.registerSockets(sockets);
         //
     }
 }
 
-module.exports = AppModule;
+module.exports = AccountingDocumentsModule;

@@ -72,44 +72,31 @@ class WorkspacesController extends Controller {
      * @param {string} period period
      */
     async _createWorkspaceSubscription(workspace, module, period) {
-        const self = this;
-        const hereditaries = uniqBy((await module.getHereditary()), "identifier");
-        const currentModules = await workspace.getCurrentModules();
+        const currentModules = await workspace.getCurrentModules(this.app);
 
-        const series = hereditaries.map(
-            function (hereditary) {
-                return async function () {
-                    const isNew = currentModules.filter(curr => curr.id === hereditary.id).length === 0;
-                    if (isNew) {
+        const isNew = currentModules.filter(curr => curr.id === module.id).length === 0;
+        if (isNew) {
+            await workspace.subscribeTo(
+                module,
+                'Module',
+                new Date(),
+                period != "lifetime" && add(new Date(), {
+                    years: period === "annually" ? 1 : undefined,
+                    months: period === "semi-annually" ? 6 : undefined,
+                    weeks: period === "demo" ? 2 : undefined,
+                })
+            );
 
-                        const subscription = await workspace.subscribeTo(
-                            hereditary,
-                            'Module',
-                            new Date(),
-                            period != "lifetime" && add(new Date(), {
-                                years: period === "annually" ? 1 : undefined,
-                                months: period === "semi-annually" ? 6 : undefined,
-                                weeks: period === "demo" ? 2 : undefined,
-                            })
-                        );
+            const appModule = this.app.module(module.identifier);
 
-                        const appModule = self.app.module(hereditary.identifier);
-
-                        if(!appModule) throw new Error(`Module ${hereditary.identifier} not found`)
-
-                        if (appModule.onSubscribe) {
-                            await appModule.onSubscribe({
-                                workspace,
-                                period,
-                                subscription,
-                            });
-                        }
-                    }
-                }
+            if (!appModule) {
+                throw new Error(`Module ${module.identifier} not found`)
             }
-        )
 
-        for (const serie of series) await serie();
+            if (appModule.onSubscribe) {
+                await appModule.onSubscribe({ workspace, period, subscription });
+            }
+        }
     }
 
 
@@ -258,12 +245,12 @@ class WorkspacesController extends Controller {
                         ])
                         .lean({ virtuals: true });
 
-                    return res.json({ 
-                        ok: true, 
+                    return res.json({
+                        ok: true,
                         workspace: {
                             ...Lang.translate(workspaceObject),
                             subscriptions: Lang.translate(subscriptions),
-                        } 
+                        }
                     })
                 } catch (error) {
                     next(error);
@@ -348,7 +335,7 @@ class WorkspacesController extends Controller {
                     }
 
                     const workspace = await Workspace.findById(workspaceId);
-                    const workspaceCurrentModule = await workspace.getCurrentModules();
+                    const workspaceCurrentModule = await workspace.getCurrentModules(this.app);
 
                     const tabBarPins = uniq(flatten(map(workspaceCurrentModule, "defaultTabBarPins")));
                     const homePaths = compact(map(workspaceCurrentModule, "defaultHomePath"));
