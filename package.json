@@ -17,7 +17,6 @@
     "@farahub/customers-club": "^1.0.0",
     "@farahub/customers-club-management": "^1.0.0",
     "@farahub/framework": "^1.0.7",
-    "@farahub/invoices": "^1.0.0",
     "@farahub/notifications": "^1.0.0",
     "@farahub/people": "^1.0.0",
     "@farahub/permissions": "^1.0.0",

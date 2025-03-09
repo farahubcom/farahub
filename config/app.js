@@ -57,7 +57,7 @@ module.exports = {
         require('@farahub/people'),
         require('@farahub/products'),
         require('@farahub/pricing'),
-        require('@farahub/invoices'),
+        // require('@farahub/invoices'),
         require('@farahub/transactions'),
 
 
@@ -66,6 +66,10 @@ module.exports = {
         // require('@farahub/customers-club-management'),
 
         // App modules (should be package later)
+        require('../modules/labels/module'),
+        require('../modules/invoices/module'),
+        require('../modules/invoices-commissions/module'),
+        require('../modules/accounting-accounts/module'),
         require('../modules/accounting-documents/module'),
         require('../modules/accounting/module'),
 
