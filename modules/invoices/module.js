@@ -2,6 +2,7 @@ const { Module } = require('@farahub/framework/foundation');
 const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
+const hooks = require('./hooks');
 
 
 class InvoicesModule extends Module {
@@ -30,14 +31,22 @@ class InvoicesModule extends Module {
     basePath = '';
 
     /**
+     * The module hooks
+     * 
+     * @var object
+     */
+    hooks = hooks;
+
+    /**
      * The module dependencies
      * 
      * @var array
      */
     dependencies = [
-        'People',
-        'Products',
+        'Customers',
+        'Services',
         'Labels',
+        'Pricing',
     ];
 
     /**

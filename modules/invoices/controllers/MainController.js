@@ -19,6 +19,13 @@ class MainController extends Controller {
     name = 'Main';
 
     /**
+     * The middleware base path
+     *
+     * @var string
+     */
+    basePath = '/invoices';
+
+    /**
      * The controller routes
      * 
      * @var array
@@ -27,31 +34,37 @@ class MainController extends Controller {
         {
             type: 'api',
             method: 'get',
-            path: '/invoices/:label',
+            path: '/',
             handler: 'list',
         },
         {
             type: 'api',
             method: 'post',
-            path: '/invoices/:label',
+            path: '/',
             handler: 'createOrUpdate',
         },
         {
             type: 'api',
             method: 'get',
-            path: '/invoices/new/number',
+            path: '/new/number',
             handler: 'newNumber',
         },
         {
             type: 'api',
             method: 'get',
-            path: '/invoice/:invoiceId',
+            path: '/default-pricing',
+            handler: 'defaultPricing',
+        },
+        {
+            type: 'api',
+            method: 'get',
+            path: '/:invoiceId',
             handler: 'details',
         },
         {
             type: 'api',
             method: 'delete',
-            path: '/invoice/:invoiceId',
+            path: '/:invoiceId',
             handler: 'delete',
         }
         //
@@ -173,6 +186,27 @@ class MainController extends Controller {
                     const Invoice = req.wsConnection.model('Invoice');
                     const number = await Invoice.generateNumber();
                     return res.json({ ok: true, number })
+                } catch (error) {
+                    next(error);
+                }
+            }
+        ]
+    }
+
+    /**
+     * Get default pricing for invoice
+     * 
+     * @return void
+     */
+    defaultPricing() {
+        return [
+            Auth.authenticate('jwt', { session: false }),
+            Workspace.resolve(this.app),
+            Injection.register(this.module, 'main.newNumber'),
+            async function (req, res, next) {
+                try {
+                    const pricing = req.workspace.getOption('invoices:pricing:default', '');
+                    return res.json({ ok: true, pricing })
                 } catch (error) {
                     next(error);
                 }
