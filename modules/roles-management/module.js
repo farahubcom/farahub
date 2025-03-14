@@ -5,14 +5,21 @@ const controllers = require('./controllers');
 const hooks = require('./hooks');
 
 
-class AccountingModule extends Module {
+class RolesManagementModule extends Module {
 
     /**
      * The module name
      * 
      * @var string
      */
-    name = 'Accounting';
+    name = 'Roles-Management';
+
+    /**
+     * The module description
+     * 
+     * @var string
+     */
+    description = 'Define and manage custom roles';
 
     /**
      * The module version
@@ -36,17 +43,7 @@ class AccountingModule extends Module {
      * @var array
      */
     dependencies = [
-        // 'People', // Should be seperated to customers & employees
-        'Customers',
-        'Members',
-        'Roles-Management',
-        // 'Roles',
-        // 'Permissions',
-        'Products',
-        'Categories',
-        'Invoices',
-        'Accounting-Accounts',
-        'Accounting-Documents',
+        'Roles',
     ];
 
     /**
@@ -77,4 +74,4 @@ class AccountingModule extends Module {
     }
 }
 
-module.exports = AccountingModule;
+module.exports = RolesManagementModule;

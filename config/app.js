@@ -67,6 +67,9 @@ module.exports = {
 
         // App modules (should be package later)
         require('../modules/labels/module'),
+        require('../modules/customers/module'),
+        require('../modules/members/module'),
+        require('../modules/roles-management/module'),
         require('../modules/invoices/module'),
         require('../modules/invoices-commissions/module'),
         require('../modules/accounting-accounts/module'),
