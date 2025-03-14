@@ -70,6 +70,7 @@ module.exports = {
         require('../modules/customers/module'),
         require('../modules/members/module'),
         require('../modules/roles-management/module'),
+        require('../modules/services/module'),
         require('../modules/invoices/module'),
         require('../modules/invoices-commissions/module'),
         require('../modules/accounting-accounts/module'),

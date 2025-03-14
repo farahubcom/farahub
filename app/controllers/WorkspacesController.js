@@ -80,11 +80,11 @@ class WorkspacesController extends Controller {
                 module,
                 'Module',
                 new Date(),
-                period != "lifetime" && add(new Date(), {
+                period != "lifetime" ? add(new Date(), {
                     years: period === "annually" ? 1 : undefined,
                     months: period === "semi-annually" ? 6 : undefined,
                     weeks: period === "demo" ? 2 : undefined,
-                })
+                }) : undefined
             );
 
             const appModule = this.app.module(module.identifier);
