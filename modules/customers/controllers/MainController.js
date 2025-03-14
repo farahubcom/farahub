@@ -165,7 +165,7 @@ class MainController extends Controller {
                     });
 
                     // create related user
-                    if (person.wasNew && data.phone) {
+                    if (data.phone) {
                         const User = this.app.connection.model('User');
 
                         let user = await User.findOne({ phone: data.phone });
@@ -175,9 +175,6 @@ class MainController extends Controller {
                             });
                         }
 
-                        // person.user = user.id;
-                        // await person.save();
-
                         const hasMember = await req.workspace.hasMember(user);
                         if (!hasMember) {
                             await req.workspace.addMember(user);
@@ -186,19 +183,8 @@ class MainController extends Controller {
                         }
                     }
 
+                    // return response
                     res.json({ ok: true, person });
-
-                    // dispatch event
-                    // req.event(new PersonCreatedOrUpdated(person, req.wsConnection, req.user));
-
-                    // // notify users
-                    // const notifiables = await req.workspace.memberships({ user: { $ne: req.user.id } })
-                    //     .select('user')
-                    //     .populate('user');
-
-                    // // send notification
-                    // notifiables.map(m => req.notify(new PersonCreated(person)).to(m.user));
-
 
                     // inject post response hooks
                     await inject('postResponse', { data, workspace, connection, inject, person, user, });
