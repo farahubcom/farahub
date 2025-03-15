@@ -1,7 +1,5 @@
 const { Doc } = require('@farahub/framework/facades');
 const mongoose = require("mongoose");
-const sumBy = require("lodash/sumBy");
-const isBefore = require("date-fns/isBefore");
 const pick = require("lodash/pick");
 
 const { ObjectId } = mongoose.Types;
@@ -111,18 +109,6 @@ class Invoice {
                 invoice[key] = data[key];
             });
 
-            // // assign factors
-            // if (data.factors) {
-            //     invoice.factors = data.factors.map(
-            //         factor => pick(factor, [
-            //             'title',
-            //             'type',
-            //             'amount',
-            //             'unit'
-            //         ])
-            //     )
-            // }
-
             // inject pre save hooks
             await inject('preSave', { invoice, data, connection })
 
@@ -141,75 +127,6 @@ class Invoice {
             throw error;
         }
     }
-
-    // /**
-    //  * Get invoice details
-    //  * 
-    //  * @return integer
-    //  */
-    // static async getDetails(invoice, { connection, inject }) {
-    //     try {
-    //         const Invoice = this.model('Invoice');
-
-    //         invoice = await Doc.resolve(invoice, Invoice);
-
-    //         const injections = await inject('queryPopulation');
-
-    //         invoice = await Invoice
-    //             .findById(invoice.id)
-    //             .populate([
-    //                 { path: "label", select: "identifier name" },
-    //                 { path: "client" },
-    //                 { path: "items" },
-    //                 { path: "items", populate: [{ path: "item" }] },
-    //                 ...injections
-    //             ])
-    //             .lean({ virtuals: true });
-
-    //         return invoice;
-    //     } catch (error) {
-    //         throw error;
-    //     }
-    // }
-
-    /**
-     * Check if invoice is still valid
-     * 
-     * @return {bool}
-     */
-    get isValid() {
-        if (!this.validTill) {
-            return true;
-        }
-        return isBefore(this.validTill, new Date());
-    }
-
-    /**
-     * Get invoice subtotal
-     * 
-     * @returns {Number}
-     */
-    get subtotal() {
-        return sumBy(this.items, 'total');
-    }
-
-    /**
-     * Get invoice total
-     * 
-     * @returns {Number}
-     */
-    get total() {
-        let subtotal = this.subtotal;
-        return subtotal + sumBy(this.factors, factor => {
-            return (
-                factor.unit === 'price' ?
-                    factor.amount :
-                    (factor.amount / 100 * subtotal)
-            ) * (factor.type === 'reducer' ? -1 : 1);
-        });
-    }
-
-    //
 }
 
 module.exports = Invoice;

@@ -1,10 +1,11 @@
 const { Controller } = require('@farahub/framework/foundation');
-const { Lang, Auth, Workspace, Injection, Doc, Num } = require('@farahub/framework/facades');
+const { Lang, Auth, Workspace, Injection, Doc, Num, Validator } = require('@farahub/framework/facades');
 const mongoose = require('mongoose');
 const isValid = require('date-fns/isValid');
 const fromUnixTime = require('date-fns/fromUnixTime');
 const startOfDay = require("date-fns/startOfDay");
 const endOfDay = require("date-fns/endOfDay");
+const CreateOrUpdateInvoiceValidator = require('../validators/CreateOrUpdateInvoiceValidator');
 
 
 const { ObjectId } = mongoose.Types;
@@ -89,7 +90,7 @@ class MainController extends Controller {
             async function (req, res, next) {
                 try {
 
-                    const { wsConnection: connection } = req;
+                    const { wsConnection: connection, inject } = req;
 
                     const Invoice = connection.model('Invoice');
                     const Client = connection.model('Person');
@@ -98,11 +99,11 @@ class MainController extends Controller {
 
                     let search = {};
 
-                    if (req.params && req.params.label) {
-                        const Meta = connection.model('Meta');
-                        const label = await Doc.resolveByIdentifier(req.params.label, Meta);
-                        search = { ...search, label: label.id };
-                    }
+                    // if (req.params && req.params.label) {
+                    //     const Label = connection.model('Label');
+                    //     const label = await Doc.resolveByIdentifier(req.params.label, Meta);
+                    //     search = { ...search, label: label.id };
+                    // }
 
                     if (args && args.number && args.number !== '') {
                         search = { ...search, number: args.number }
@@ -127,31 +128,31 @@ class MainController extends Controller {
                         }
                     }
 
-                    if (args && args.client) {
+                    if (args && args.customer) {
                         const clients = await Client.find(
-                            Num.isNumeric(args.client) ?
-                                { code: Number(args.client) } :
+                            Num.isNumeric(args.customer) ?
+                                { code: Number(args.customer) } :
                                 {
                                     $or: [
-                                        { firstName: { $regex: args.client + '.*' } },
-                                        { lastName: { $regex: args.client + '.*' } }
+                                        { firstName: { $regex: args.customer + '.*' } },
+                                        { lastName: { $regex: args.customer + '.*' } }
                                     ]
                                 }
                         );
-                        const clientsIds = clients.map(client => client._id);
-                        search = { ...search, client: { $in: clientsIds } };
+                        const customerIds = clients.map(customer => customer._id);
+                        search = { ...search, customer: { $in: customerIds } };
                     }
 
                     const sort = args && args.sort ? args.sort : "-createdAt"
 
-                    const queryInjections = await this.module.inject('main.list.queryPopulation');
+                    const populationInjections = await req.inject('populate');
 
                     const query = Invoice.find(search)
                         .populate([
-                            { path: "client" },
+                            { path: "customer" },
                             { path: "items" },
                             { path: "items", populate: [{ path: "item" }] },
-                            ...queryInjections
+                            ...(populationInjections || [])
                         ])
 
                     query.sort(sort);
@@ -208,7 +209,7 @@ class MainController extends Controller {
         return [
             Auth.authenticate('jwt', { session: false }),
             Workspace.resolve(this.app),
-            Injection.register(this.module, 'main.newNumber'),
+            Injection.register(this.module, 'main.defaultPricing'),
             async function (req, res, next) {
                 try {
                     const pricing = req.workspace.getOption('invoices:pricing:default', '');
@@ -235,26 +236,18 @@ class MainController extends Controller {
 
                     const { invoiceId } = req.params;
 
-
                     const Invoice = req.wsConnection.model('Invoice');
 
-                    let invoice = await Invoice.getDetails(
-                        invoiceId,
-                        { connection: req.wsConnection, inject: req.inject }
-                    )
+                    const injections = await req.inject('queryPopulation');
 
-                    // const injections = await this.module.inject('main.details.queryPopulation');
-
-                    // const response = await Invoice
-                    //     .findById(ObjectId(invoiceId))
-                    //     .populate([
-                    //         { path: "label", select: "identifier name" },
-                    //         { path: "client" },
-                    //         { path: "items" },
-                    //         { path: "items", populate: [{ path: "item" }] },
-                    //         ...(injections && injections)
-                    //     ])
-                    //     .lean({ virtuals: true });
+                    let invoice = await Doc.resolve(invoiceId, Invoice)
+                        .populate([
+                            { path: "customer" },
+                            { path: "items" },
+                            { path: "items", populate: [{ path: "item" }] },
+                            ...injections
+                        ])
+                        .lean({ virtuals: true });
 
 
                     invoice = Lang.translate(invoice);
@@ -280,25 +273,16 @@ class MainController extends Controller {
             Auth.authenticate('jwt', { session: false }),
             Workspace.resolve(this.app),
             Injection.register(this.module, 'main.createOrUpdate'),
+            Validator.validate(new CreateOrUpdateInvoiceValidator()),
             async function (req, res, next) {
                 try {
-
-                    // return res.json({
-                    //     ok: true,
-                    //     body: req.body,
-                    // })
-
                     const { inject, wsConnection: connection } = req;
 
                     const data = req.body;
 
                     const Invoice = connection.model('Invoice');
 
-                    let invoice = await Invoice.createOrUpdate(
-                        data,
-                        data.id,
-                        { connection, inject }
-                    );
+                    let invoice = await Invoice.createOrUpdate(data, data.id, { connection, inject });
 
                     // // log the activity
                     // const Activity = connection.model('Activity');

@@ -1,9 +1,9 @@
-const InvoiceItem = require("./InvoiceItem");
+const Invoice = require("./Invoice");
 
 const schemas = {
     'injects': {
         'Invoices': {
-            InvoiceItem
+            Invoice
         }
     }
 }

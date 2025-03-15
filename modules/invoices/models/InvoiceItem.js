@@ -64,12 +64,6 @@ class InvoiceItem {
             throw error;
         }
     }
-
-    get total() {
-        const total = this.unitPrice * this.reservedQuantity * (this.duration || 1);
-        const discountPrice = this.discountPercent / 100 * total;
-        return total - discountPrice;
-    }
 }
 
 module.exports = InvoiceItem;
