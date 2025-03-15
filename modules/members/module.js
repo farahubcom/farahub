@@ -38,7 +38,6 @@ class MembersModule extends Module {
     dependencies = [
         'People',
         'Roles',
-        'Roles-Management'
     ];
 
     /**

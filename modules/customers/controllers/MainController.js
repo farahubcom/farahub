@@ -1,11 +1,8 @@
 const { Controller } = require("@farahub/framework/foundation");
-const { Doc, Num, Lang, Validator, Injection, Event, Auth, Workspace, Resource } = require("@farahub/framework/facades");
+const { Num, Validator, Injection, Event, Auth, Workspace, Resource } = require("@farahub/framework/facades");
 const CreateOrUpdateCustomerValidator = require('../validators/CreateOrUpdateCustomerValidator');
-const CustomerDetailsValidator = require('../validators/CustomerDetailsValidator');
-const CustomerDeleteValidator = require('../validators/CustomerDeleteValidator');
-const flatten = require('lodash/flatten');
 const CustomerListingResource = require("../resources/CustomerListingResource");
-const { get } = require("lodash");
+const get = require("lodash/get");
 
 
 class MainController extends Controller {

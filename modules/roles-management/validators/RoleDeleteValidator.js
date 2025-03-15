@@ -4,7 +4,7 @@ const { Doc } = require("@farahub/framework/facades");
 const { ObjectId } = mongoose.Types;
 
 
-class CustomerDetailsValidator {
+class RoleDeleteValidator {
 
     /**
      * The validator rules
@@ -13,16 +13,16 @@ class CustomerDetailsValidator {
      */
     rules() {
         return {
-            personId: {
+            roleId: {
                 in: ["params"],
                 isMongoId: {
                     bail: true
                 },
                 custom: {
                     options: (value, { req }) => {
-                        const Person = req.wsConnection.model('Person');
-                        return Doc.resolve(value, Person).then(person => {
-                            if (!person)
+                        const Role = req.wsConnection.model('Role');
+                        return Doc.resolve(value, Role).then(role => {
+                            if (!role)
                                 return Promise.reject(false);
                             return Promise.resolve(true);
                         })
@@ -46,9 +46,9 @@ class CustomerDetailsValidator {
     toResponse(res, { errors }) {
         return res.status(404).json({
             ok: false,
-            message: 'Person not found'
+            message: 'Role not found'
         })
     }
 }
 
-module.exports = CustomerDetailsValidator;
+module.exports = RoleDeleteValidator;
