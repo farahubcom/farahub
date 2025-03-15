@@ -41,9 +41,9 @@ class InvoiceItem {
             // assign rest of fields
             Object.keys(
                 pick(data, [
-                    'quantity',
+                    'amount',
                     'unitPrice',
-                    'note'
+                    'discount',
                 ])
             ).forEach(key => {
                 item[key] = data[key];

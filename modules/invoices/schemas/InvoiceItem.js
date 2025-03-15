@@ -8,9 +8,9 @@ const { ObjectId } = mongoose.Types;
 const InvoiceItemSchema = new Schema({
     invoice: { type: ObjectId, ref: 'Invoice', required: true },
     item: { type: ObjectId, ref: 'Product', required: true },
-    unitPrice: { type: Number, required: true },
     amount: { type: Number, required: true },
-    note: String
+    unitPrice: { type: Number, required: true },
+    discount: Number,
 }, { collection: "invoices:invoice_items" });
 
 InvoiceItemSchema.pre('save', function (next) {

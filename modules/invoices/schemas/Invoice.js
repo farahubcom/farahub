@@ -7,16 +7,16 @@ const { ObjectId } = mongoose.Types;
 
 const InvoiceSchema = new Schema({
     number: { type: Number, required: true },
-    type: { type: String, required: true },
-    client: { type: ObjectId, ref: 'Person', required: true },
+    pricing: { type: ObjectId, ref: 'Pricing' },
+    customer: { type: ObjectId, ref: 'Person', required: true },
     labels: [{ type: ObjectId, ref: 'Label' }],
     note: String,
-    factors: [{
-        title: String,
-        type: { type: String, enum: ['enhancer', 'reducer'], required: true },
-        amount: { type: Number, required: true },
-        unit: { type: String, enum: ['percent', 'price'], required: true }
-    }],
+    // factors: [{
+    //     title: String,
+    //     type: { type: String, enum: ['enhancer', 'reducer'], required: true },
+    //     amount: { type: Number, required: true },
+    //     unit: { type: String, enum: ['percent', 'price'], required: true }
+    // }],
     issuedAt: { type: Date, required: true },
 }, {
 

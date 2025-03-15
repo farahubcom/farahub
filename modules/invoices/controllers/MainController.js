@@ -58,6 +58,12 @@ class MainController extends Controller {
         {
             type: 'api',
             method: 'get',
+            path: '/quick-access',
+            handler: 'quickAccessProducts',
+        },
+        {
+            type: 'api',
+            method: 'get',
             path: '/:invoiceId',
             handler: 'details',
         },
@@ -66,7 +72,7 @@ class MainController extends Controller {
             method: 'delete',
             path: '/:invoiceId',
             handler: 'delete',
-        }
+        },
         //
     ]
 
@@ -277,37 +283,41 @@ class MainController extends Controller {
             async function (req, res, next) {
                 try {
 
+                    // return res.json({
+                    //     ok: true,
+                    //     body: req.body,
+                    // })
+
                     const { inject, wsConnection: connection } = req;
 
                     const data = req.body;
-                    const { label } = req.params;
 
                     const Invoice = connection.model('Invoice');
 
                     let invoice = await Invoice.createOrUpdate(
-                        { ...data, label },
+                        data,
                         data.id,
                         { connection, inject }
                     );
 
-                    // log the activity
-                    const Activity = connection.model('Activity');
+                    // // log the activity
+                    // const Activity = connection.model('Activity');
 
-                    await Activity.createNew({
-                        causer: ObjectId(req.user.id),
-                        causerModel: 'User',
-                        subject: invoice.id,
-                        subjectModel: 'Invoice',
-                        event: invoice.wasNew ? 'created' : 'updated',
-                    });
+                    // await Activity.createNew({
+                    //     causer: ObjectId(req.user.id),
+                    //     causerModel: 'User',
+                    //     subject: invoice.id,
+                    //     subjectModel: 'Invoice',
+                    //     event: invoice.wasNew ? 'created' : 'updated',
+                    // });
 
 
-                    invoice = await Invoice.getDetails(
-                        invoice.id,
-                        { connection, inject }
-                    )
+                    // invoice = await Invoice.getDetails(
+                    //     invoice.id,
+                    //     { connection, inject }
+                    // )
 
-                    invoice = Lang.translate(invoice);
+                    // invoice = Lang.translate(invoice);
 
                     return res.json({ ok: true, invoice })
                 } catch (error) {
@@ -357,7 +367,68 @@ class MainController extends Controller {
         ]
     }
 
-    //
+    /**
+     * List of products with quick access label
+     * 
+     * @return void
+     */
+    quickAccessProducts() {
+        return [
+            Auth.authenticate('jwt', { session: false }),
+            Workspace.resolve(this.app),
+            Injection.register(this.module, 'main.quickAccess'),
+            async function (req, res, next) {
+                try {
+
+                    const args = req.query;
+                    const { inject, wsConnection: connection, user } = req;
+
+                    const Product = connection.model('Product');
+                    const Label = connection.model('Label');
+
+                    const labelQuickAccess = await Label.findOne({ type: 'invoice-quick-access' });
+                    const searchInjections = await inject('search', { user });
+
+                    let search = {
+                        labels: labelQuickAccess?.id,
+                        ...(searchInjections && Object.assign({},
+                            ...searchInjections
+                        ))
+                    }
+
+
+                    const sort = args && args.sort ? args.sort : "-createdAt";
+
+                    const populationInjections = await req.inject('populate');
+
+                    const query = Product.find(search)
+                        .select('code name description updatedAt')
+                        .populate([
+                            {
+                                path: 'prices',
+                                select: 'amount',
+                                populate: [
+                                    { path: 'pricing', select: 'id name' }
+                                ]
+                            },
+                            ...(populationInjections || [])
+                        ]);
+
+                    query.sort(sort);
+
+                    const total = await Product.find(search).count();
+
+                    let data = await query.lean({ virtuals: true });
+
+                    data = Lang.translate(data);
+
+                    return res.json({ ok: true, data, total });
+                } catch (error) {
+                    next(error)
+                }
+            }
+        ]
+    }
 }
 
 module.exports = MainController;

@@ -71,6 +71,7 @@ module.exports = {
         require('../modules/members/module'),
         require('../modules/roles-management/module'),
         require('../modules/services/module'),
+        require('../modules/products-labels/module'),
         require('../modules/invoices/module'),
         require('../modules/invoices-commissions/module'),
         require('../modules/accounting-accounts/module'),

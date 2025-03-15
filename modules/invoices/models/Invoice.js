@@ -36,41 +36,34 @@ class Invoice {
      * @param {array} items items to sync
      * @param {Object} args extra arguments
      */
-    async syncItems(items, { connection }) {
-        try {
+    async syncItems(items, { connection, inject }) {
+        const InvoiceItem = this.model('InvoiceItem');
 
-            const InvoiceItem = this.model('InvoiceItem');
+        if (!this.wasNew) {
+            // Remove items that are not in the updated array
+            const invoiceItems = await InvoiceItem.find({ invoice: this.id });
+            const itemsIds = invoiceItems.map(i => i.id);
+            const dataItemsIds = items.map(it => it.id).filter(Boolean);
+            const diff = itemsIds.filter(item => !dataItemsIds.includes(item));
 
-            if (!this.wasNew) {
-                // remove items that are not in updated array
-                const invoiceItems = await InvoiceItem.find({
-                    invoice: this.id
-                });
-                const itemsIds = invoiceItems.map(i => i.id);
-                const dataItemsIds = items.map(it => it.id).filter(Boolean)
-                const diff = itemsIds.map(
-                    item => dataItemsIds.includes(item) ? null : item
-                ).filter(Boolean);
-
+            if (diff.length > 0) {
                 await InvoiceItem.deleteMany({ _id: { $in: diff } });
             }
+        }
 
-            // update the rest
-            this.items = await Promise.all(
-                items.map(
-                    async item => await InvoiceItem.createOrUpdate(
-                        { ...item, invoice: this },
-                        item.id,
-                        { connection }
-                    )
+        // Update the rest
+        this.items = await Promise.all(
+            items.map(item =>
+                InvoiceItem.createOrUpdate(
+                    { ...item, invoice: this },
+                    item.id,
+                    { connection, inject }
                 )
             )
+        );
 
-            // save invoice
-            await this.save();
-        } catch (error) {
-            throw error;
-        }
+        // Save invoice
+        await this.save();
     }
 
     /**
@@ -93,16 +86,21 @@ class Invoice {
             // assign labels
             invoice.labels = data.labels;
 
-            // assign client
-            const Client = this.model('Person');
-            const client = await Doc.resolve(data.client, Client);
-            invoice.client = client.id;
+            // assign customer
+            const Person = this.model('Person');
+            const customer = await Doc.resolve(data.customer, Person);
+            invoice.customer = customer.id;
 
-            // attach invoice number if is new
-            if (invoice.isNew) {
-                invoice.number = data.number || await this.generateNumber();
-                invoice.issuedAt = new Date();
+            // assign pricing
+            if (data.pricing) {
+                const Pricing = this.model('Pricing');
+                const pricing = await Doc.resolve(data.pricing, Pricing);
+                invoice.pricing = pricing.id;
             }
+
+            // attach invoice number and date
+            invoice.number = data.number || await this.generateNumber();
+            invoice.issuedAt = data.issuedAt ? new Date(data.issuedAt) : new Date();
 
             // assign other fields
             Object.keys(
@@ -113,17 +111,17 @@ class Invoice {
                 invoice[key] = data[key];
             });
 
-            // assign factors
-            if (data.factors) {
-                invoice.factors = data.factors.map(
-                    factor => pick(factor, [
-                        'title',
-                        'type',
-                        'amount',
-                        'unit'
-                    ])
-                )
-            }
+            // // assign factors
+            // if (data.factors) {
+            //     invoice.factors = data.factors.map(
+            //         factor => pick(factor, [
+            //             'title',
+            //             'type',
+            //             'amount',
+            //             'unit'
+            //         ])
+            //     )
+            // }
 
             // inject pre save hooks
             await inject('preSave', { invoice, data, connection })
@@ -132,7 +130,7 @@ class Invoice {
             await invoice.save();
 
             // sync items
-            await invoice.syncItems(data.items, { connection });
+            await invoice.syncItems(data.items, { connection, inject });
 
             // inject post save hooks
             await inject('postSave', { invoice, data, connection })
