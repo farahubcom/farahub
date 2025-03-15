@@ -1,7 +1,7 @@
 const { Controller } = require('@farahub/framework/foundation');
 const { Num, Validator, Injection, Event, Auth, Workspace, Resource } = require("@farahub/framework/facades");
 const CreateOrUpdateMemberValidator = require('../validators/CreateOrUpdateMemberValidator');
-const CustomerListingResource = require("../resources/MemberListingResource");
+const MemberListingResource = require("../resources/MemberListingResource");
 const get = require("lodash/get");
 
 
@@ -101,7 +101,7 @@ class MainController extends Controller {
 
                     let data = await query.lean({ virtuals: true });
 
-                    data = Resource.make(CustomerListingResource, data);
+                    data = Resource.make(MemberListingResource, data);
 
                     return res.json({ ok: true, data, total })
                 } catch (error) {

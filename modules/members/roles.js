@@ -1,6 +1,6 @@
 const roles = {
     "admin": {
-        "name": "Administrator",
+        "name": "مدیر کل",
         "access": ['*']
     }
 }
