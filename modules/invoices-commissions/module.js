@@ -35,7 +35,10 @@ class InvoicesCommissionsModule extends Module {
      * 
      * @var array
      */
-    dependencies = [];
+    dependencies = [
+        'Invoices',
+        'People',
+    ];
 
     /**
      * The module hooks

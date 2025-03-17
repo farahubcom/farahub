@@ -50,13 +50,13 @@ class InvoiceItem {
             });
 
             // inject pre save hooks
-            await inject('preSave', { item, data, itemId, connection })
+            await inject('itemPreSave', { item, data, itemId, connection })
 
             // save changes
             await item.save();
 
             // inject post save hooks
-            await inject('postSave', { item, data, itemId, connection })
+            await inject('itemPostSave', { item, data, itemId, connection })
 
             // return modified item
             return item;

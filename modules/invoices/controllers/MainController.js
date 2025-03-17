@@ -146,12 +146,13 @@ class MainController extends Controller {
                     const sort = args && args.sort ? args.sort : "-createdAt"
 
                     const populationInjections = await req.inject('populate');
+                    const itemPopulationInjections = await req.inject('populate.item');
 
                     const query = Invoice.find(search)
                         .populate([
                             { path: "customer" },
                             { path: "items" },
-                            { path: "items", populate: [{ path: "item" }] },
+                            { path: "items", populate: [{ path: "item" }, ...(itemPopulationInjections || [])] },
                             ...(populationInjections || [])
                         ])
 
