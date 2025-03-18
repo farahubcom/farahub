@@ -37,7 +37,7 @@ class InvoicesCommissionsModule extends Module {
      */
     dependencies = [
         'Invoices',
-        'People',
+        'Members',
     ];
 
     /**

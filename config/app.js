@@ -67,8 +67,6 @@ module.exports = {
 
         // App modules (should be package later)
         require('../modules/labels/module'),
-        require('../modules/customers/module'),
-        require('../modules/members/module'),
         require('../modules/roles-management/module'),
         require('../modules/services/module'),
         require('../modules/products-labels/module'),

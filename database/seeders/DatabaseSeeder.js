@@ -9,7 +9,7 @@ class DatabaseSeeder extends Seeder {
      */
     seeders = [
         require('./RolesSeeder'),
-        require('./FarahubSeeder'),
+        require('./AdminWorkspaceSeeder'),
     ];
 
     /**

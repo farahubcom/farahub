@@ -5,7 +5,7 @@ const path = require('path');
 const { hash } = require('bcrypt');
 
 
-class FarahubSeeder extends Seeder {
+class AdminWorkspaceSeeder extends Seeder {
 
     /**
      * Create module subscription for the workspace
@@ -42,7 +42,7 @@ class FarahubSeeder extends Seeder {
 
         try {
             const JSONData = fs.readFileSync(
-                path.join(__dirname, '../data/farahub_admin.json'),
+                path.join(__dirname, '../data/admin_workspace.json'),
                 'utf-8'
             )
 
@@ -114,4 +114,4 @@ class FarahubSeeder extends Seeder {
     }
 }
 
-module.exports = FarahubSeeder;
+module.exports = AdminWorkspaceSeeder;
