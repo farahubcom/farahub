@@ -3,6 +3,8 @@ const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
 const hooks = require('./hooks');
+const roles = require('./roles');
+const permissions = require('./permissions');
 
 
 class InvoicesModule extends Module {
@@ -38,12 +40,27 @@ class InvoicesModule extends Module {
     hooks = hooks;
 
     /**
+     * The module roles
+     * 
+     * @var Object
+     */
+    roles = roles;
+
+    /**
+     * The module permissions
+     * 
+     * @var Object
+     */
+    permissions = permissions;
+
+    /**
      * The module dependencies
      * 
      * @var array
      */
     dependencies = [
-        'Customers',
+        'People',
+        'Roles',
         'Products-Labels', // To add quick access label
         'Services',
         'Labels',

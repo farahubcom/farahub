@@ -3,6 +3,7 @@ const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
 const hooks = require('./hooks');
+const roles = require("./roles");
 
 
 class InvoicesCommissionsModule extends Module {
@@ -37,7 +38,8 @@ class InvoicesCommissionsModule extends Module {
      */
     dependencies = [
         'Invoices',
-        'Members',
+        'People',
+        'Roles',
     ];
 
     /**
@@ -46,6 +48,13 @@ class InvoicesCommissionsModule extends Module {
      * @var object
      */
     hooks = hooks;
+
+    /**
+     * The module roles
+     * 
+     * @var Object
+     */
+    roles = roles;
 
     /**
      * Register the module
