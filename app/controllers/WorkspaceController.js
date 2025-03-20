@@ -262,7 +262,6 @@ class WorkspaceController extends Controller {
                 try {
                     const data = req.body;
 
-                    // console.log(data);
                     req.workspace.name.set('fa-IR', data.name);
 
                     // inject pre save hooks

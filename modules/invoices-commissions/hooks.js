@@ -40,7 +40,7 @@ const hooks = module => ({
                         options: (value, { req, path }) => {
                             const memberPath = path.replace('commissonPercent', 'member');
                             const memberValue = req.body[memberPath];
-                            
+
                             // If member is provided, commissonPercent is required
                             if (memberValue && value === undefined) {
                                 throw new Error('پورسانت اجباری می باشد.');
@@ -58,7 +58,6 @@ const hooks = module => ({
             }
         },
         'main.createOrUpdate.itemPreSave': async ({ item, data, itemId, connection }) => {
-            console.log({item, data});
             if (data.member) {
                 const Person = connection.model('Person');
                 const person = await Doc.resolve(data.member, Person);
