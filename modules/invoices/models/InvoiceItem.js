@@ -64,6 +64,15 @@ class InvoiceItem {
             throw error;
         }
     }
+
+    /**
+     * Get item total
+     * 
+     * @returns {Number}
+     */
+    get total() {
+        return this.unitPrice * (this.amount || 1) - (this.discount || 0);
+    }
 }
 
 module.exports = InvoiceItem;
