@@ -77,6 +77,7 @@ module.exports = {
         require('../modules/accounting-accounts/module'),
         require('../modules/accounting-documents/module'),
         require('../modules/accounting/module'),
+        require('../modules/beauty-salon-reservations/module'),
 
         // App module
         require('../app/module'),
