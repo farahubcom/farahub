@@ -3,7 +3,6 @@ const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
 const hooks = require('./hooks');
-const roles = require('./roles');
 const permissions = require('./permissions');
 
 
@@ -38,13 +37,6 @@ class InvoicesModule extends Module {
      * @var object
      */
     hooks = hooks;
-
-    /**
-     * The module roles
-     * 
-     * @var Object
-     */
-    roles = roles;
 
     /**
      * The module permissions

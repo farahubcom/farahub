@@ -1,18 +1,18 @@
-const { Module } = require("@farahub/framework/foundation");
+const { Module } = require('@farahub/framework/foundation');
 const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
-const hooks = require('./hooks');
+const roles = require('./roles');
 
 
-class InvoicesCommissionsModule extends Module {
+class EmployeesModule extends Module {
 
     /**
      * The module name
      * 
      * @var string
      */
-    name = 'Invoices-Commissions';
+    name = 'Employees';
 
     /**
      * The module version
@@ -31,21 +31,21 @@ class InvoicesCommissionsModule extends Module {
     basePath = '';
 
     /**
+     * The module roles
+     * 
+     * @var Object
+     */
+    roles = roles;
+
+    /**
      * The module dependencies
      * 
      * @var array
      */
     dependencies = [
-        'Invoices',
-        'Employees',
+        'People',
+        'Roles'
     ];
-
-    /**
-     * The module hooks
-     * 
-     * @var object
-     */
-    hooks = hooks;
 
     /**
      * Register the module
@@ -57,15 +57,6 @@ class InvoicesCommissionsModule extends Module {
         this.registerSchemas(schemas);
         this.registerControllers(controllers);
     }
-
-    /**
-     * Boot the module
-     * 
-     * @return void
-     */
-    boot() {
-        //
-    }
 }
 
-module.exports = InvoicesCommissionsModule;
+module.exports = EmployeesModule;

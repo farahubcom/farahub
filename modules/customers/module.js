@@ -2,6 +2,7 @@ const { Module } = require('@farahub/framework/foundation');
 const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
+const roles = require('./roles');
 
 
 class CustomersModule extends Module {
@@ -28,6 +29,13 @@ class CustomersModule extends Module {
      * @var string
      */
     basePath = '';
+
+    /**
+     * The module roles
+     * 
+     * @var Object
+     */
+    roles = roles;
 
     /**
      * The module dependencies
