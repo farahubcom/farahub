@@ -2,19 +2,16 @@ const { Module } = require('@farahub/framework/foundation');
 const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
-const hooks = require('./hooks');
-const roles = require('./roles');
-const permissions = require('./permissions');
 
 
-class InvoicesModule extends Module {
+class CustomersModule extends Module {
 
     /**
      * The module name
      * 
      * @var string
      */
-    name = 'Invoices';
+    name = 'Customers';
 
     /**
      * The module version
@@ -33,37 +30,13 @@ class InvoicesModule extends Module {
     basePath = '';
 
     /**
-     * The module hooks
-     * 
-     * @var object
-     */
-    hooks = hooks;
-
-    /**
-     * The module roles
-     * 
-     * @var Object
-     */
-    roles = roles;
-
-    /**
-     * The module permissions
-     * 
-     * @var Object
-     */
-    permissions = permissions;
-
-    /**
      * The module dependencies
      * 
      * @var array
      */
     dependencies = [
-        'Customers',
-        'Products-Labels', // To add quick access label
-        'Services',
-        'Labels',
-        'Pricing',
+        'People',
+        'Roles'
     ];
 
     /**
@@ -78,4 +51,4 @@ class InvoicesModule extends Module {
     }
 }
 
-module.exports = InvoicesModule;
+module.exports = CustomersModule;
