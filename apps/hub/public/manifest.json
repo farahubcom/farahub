@@ -1,7 +1,7 @@
 {
-  "short_name": "Farahub",
-  "name": "Farahub",
-  "description": "ابزار، منابع و خدمات نرم‌افزاری برای توسعه کسب و کار و سازمان",
+  "short_name": "NilaHub",
+  "name": "NilaHub",
+  "description": "پلتفرم سالن‌های زیبایی نیلاهاب",
   "icons": [
     {
       "src": "favicon.ico",
@@ -21,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#0067A5",
+  "theme_color": "#efb403",
   "background_color": "#ffffff"
 }
