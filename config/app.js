@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
 
     /**
@@ -111,4 +113,18 @@ module.exports = {
         'Notifications',
         'Activities',
     ],
+
+    /**
+     * resolve application root path
+     *
+     * @var string
+     */
+    rootPath: path.join(__dirname, '..'),
+
+    /**
+     * resolve application path
+     *
+     * @var string
+     */
+    appsPath: path.join(__dirname, '../apps'),
 }

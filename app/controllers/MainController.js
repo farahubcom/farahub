@@ -1,7 +1,5 @@
+const View = require('@farahub/framework/facades/View');
 const { Controller } = require('@farahub/framework/foundation');
-const fs = require('fs');
-const { ViewResolver } = require('@farahub/framework/facades');
-
 
 class MainController extends Controller {
 
@@ -21,41 +19,10 @@ class MainController extends Controller {
         {
             type: 'web',
             method: 'get',
-            path: '/static/*',
-            handler: 'static',
-        },
-        {
-            type: 'web',
-            method: 'all',
-            path: '/*',
+            path: '/',
             handler: 'home',
         },
     ];
-
-    /**
-     * Module views directory name
-     * 
-     * @var string
-     */
-    directoryName = 'hub'
-
-    /**
-     * Serve landing static files
-     * 
-     * @returns void
-     */
-    static() {
-        return async function (req, res) {
-            const filePath = this.app.getPublicPath(
-                fs.existsSync(this.app.getViewsPath(req.workspace.hostname, 'landing')) ?
-                    req.workspace.hostname : '',
-                'landing',
-                req.path
-            );
-
-            return fs.existsSync(filePath) ? res.sendFile(filePath) : res.render("404");
-        }
-    }
 
     /**
      * Display home page
@@ -67,9 +34,11 @@ class MainController extends Controller {
      */
     home() {
         return [
-            ViewResolver.register(this.app, 'hub'),
+            View.setRenderBasePath(this.app.getAppsPath('test', 'views')),
             async function (req, res) {
-                return res.resolveAndRender(req.path);
+                return res.render('index', { id: 'Nila Crm' });
+                // return res.json(req.workspace?.identifier);
+                // return res.resolveAndRender(req.path);
             }
         ]
     }

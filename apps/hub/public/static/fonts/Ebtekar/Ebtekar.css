@@ -1,0 +1,8 @@
+﻿@font-face {
+	font-family: Ebtekar;
+	font-style: normal;
+	src: url('./Ebtekar.eot');
+	src: url('./Ebtekar.eot') format('embedded-opentype'),  /* IE6-8 */
+		 url('./Ebtekar.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+		 url('./Ebtekar.ttf') format('truetype');
+}

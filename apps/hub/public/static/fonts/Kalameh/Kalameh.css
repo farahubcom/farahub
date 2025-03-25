@@ -1,0 +1,8 @@
+﻿@font-face {
+	font-family: Kalameh;
+	font-style: normal;
+	src: url('./Kalameh_Regular.eot');
+	src: url('./Kalameh_Regular.eot') format('embedded-opentype'),  /* IE6-8 */
+		 url('./Kalameh_Regular.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+		 url('./Kalameh_Regular.ttf') format('truetype');
+}

@@ -1,3 +1,4 @@
+const MainController = require("./MainController");
 const WorkspacesController = require("./WorkspacesController");
 const ModulesController = require("./ModulesController");
 const AuthenticatedController = require("./AuthenticatedController");
@@ -6,6 +7,7 @@ const WorkspaceController = require("./WorkspaceController");
 
 
 const controllers = [
+    MainController,
     WorkspacesController,
     ModulesController,
     AuthenticatedController,

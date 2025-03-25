@@ -1,0 +1,2 @@
+"use strict";(globalThis.webpackChunkfarahub=globalThis.webpackChunkfarahub||[]).push([[7623],{7623:(a,h,s)=>{s.r(h),s.d(h,{default:()=>e});var u=s(80184);const e=()=>(0,u.jsx)("div",{children:"Security Settings"})}}]);
+//# sourceMappingURL=7623.2a7a4daa.chunk.js.map
