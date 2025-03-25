@@ -1,4 +1,3 @@
-const View = require('@farahub/framework/facades/View');
 const { Controller } = require('@farahub/framework/foundation');
 
 class MainController extends Controller {
@@ -34,11 +33,8 @@ class MainController extends Controller {
      */
     home() {
         return [
-            View.setRenderBasePath(this.app.getAppsPath('test', 'views')),
             async function (req, res) {
                 return res.render('index', { id: 'Nila Crm' });
-                // return res.json(req.workspace?.identifier);
-                // return res.resolveAndRender(req.path);
             }
         ]
     }

@@ -21,7 +21,7 @@ module.exports = {
      * 
      * @var boolean
      */
-    dev: process.env.NODE_ENV !== "production",
+    dev: false,
 
     /**
      * Name of the application core database

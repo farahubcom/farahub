@@ -1,7 +1,7 @@
 {
   "workspace": {
-    "identifier": "farahub-admin",
-    "hostname": "farahub.local",
+    "identifier": "nila-admin",
+    "hostname": "nilaapp.ir",
     "name": {
       "fa-IR": "فضای کار مدیریت",
       "en-US": "Administrator workspace"
@@ -18,6 +18,12 @@
       "username": "farzinkakh",
       "phone": "09130447413",
       "email": "farzinask1996@gmail.com"
+    },
+    {
+      "first_name": "ایمان",
+      "last_name": "امیری فر",
+      "username": "amirifariman",
+      "phone": "09120467093"
     }
   ],
   "modules": [],

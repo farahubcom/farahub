@@ -76,10 +76,6 @@ class AdminWorkspaceSeeder extends Seeder {
                         const Role = this.app.connection.model('Role');
                         let role = await Doc.resolveByIdentifier('owner', Role);
 
-                        if (!role) {
-                            role = await Role.createNew
-                        }
-
                         const password = await hash('admin', 10);
 
                         await adminWorkspace.addMember(user, role, {
