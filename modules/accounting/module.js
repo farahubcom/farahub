@@ -38,7 +38,7 @@ class AccountingModule extends Module {
     dependencies = [
         // 'People', // Should be seperated to customers & employees
         'Customers',
-        'Members',
+        'Employees',
         'Roles-Management',
         // 'Roles',
         // 'Permissions',
