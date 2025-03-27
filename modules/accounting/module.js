@@ -36,12 +36,9 @@ class AccountingModule extends Module {
      * @var array
      */
     dependencies = [
-        // 'People', // Should be seperated to customers & employees
         'Customers',
         'Members',
         'Roles-Management',
-        // 'Roles',
-        // 'Permissions',
         'Products',
         'Categories',
         'Invoices',
