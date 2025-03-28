@@ -37,7 +37,7 @@ class AccountingModule extends Module {
      */
     dependencies = [
         'Customers',
-        'Members',
+        'Employees',
         'Roles-Management',
         'Products',
         'Categories',
