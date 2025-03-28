@@ -57,6 +57,7 @@ const hooks = module => ({
                         ...Lang.translate(membershipObject),
                         permissions
                     },
+                    isAdmin: workspace.hostname == module.app.hostname,
                 },
             };
         }
