@@ -80,6 +80,7 @@ module.exports = {
         require('../modules/accounting-documents/module'),
         require('../modules/accounting/module'),
         require('../modules/beauty-salon-reservations/module'),
+        require('../modules/beauty-salon/module'),
 
         // App module
         require('../app/module'),
