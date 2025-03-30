@@ -15,29 +15,8 @@ class MainController extends Controller {
      * @var array
      */
     routes = [
-        {
-            type: 'web',
-            method: 'get',
-            path: '/',
-            handler: 'home',
-        },
+        //
     ];
-
-    /**
-     * Display home page
-     * 
-     * @param {*} req request
-     * @param {*} res response
-     * 
-     * @return void
-     */
-    home() {
-        return [
-            async function (req, res) {
-                return res.render('index', { id: 'Nila Crm' });
-            }
-        ]
-    }
 }
 
 module.exports = MainController;

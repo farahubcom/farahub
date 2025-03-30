@@ -295,6 +295,9 @@ class WorkspacesController extends Controller {
                     )
                     for (const fn of runners) await fn();
 
+                    workspace.shouldRecreateConnection = true;
+                    await workspace.save();
+
                     return res.json({ ok: true });
                 } catch (error) {
                     next(error);

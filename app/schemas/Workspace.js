@@ -11,10 +11,13 @@ const WorkspaceSchema = new Schema({
     hostname: { type: String, unique: true, sparse: true },
     category: { type: ObjectId, ref: 'Category' },
     description: { type: Map, of: String },
-    // options: { type: Map, of: Object },
     options: Object,
     dbUrl: { type: String, select: false },
     picture: String,
+
+
+    // Flag that determine workspace connection should be recreated
+    shouldRecreateConnection: { type: Boolean, default: false },
 }, {
 
     /**
@@ -23,13 +26,13 @@ const WorkspaceSchema = new Schema({
      * @var string
      */
     collection: "core:workspaces",
-    
+
     /**
      * Enable collection timestamps
      * 
      * @var bool
      */
-    timestamps: true, 
+    timestamps: true,
 });
 
 WorkspaceSchema.virtual('_memberships', {

@@ -75,7 +75,6 @@ class AppModule extends Module {
      */
     boot() {
         this.registerSockets(sockets);
-        //
     }
 }
 
