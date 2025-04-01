@@ -1,8 +1,4 @@
 const { Doc } = require("@farahub/framework/facades");
-// const mongoose = require("mongoose");
-
-// const { ObjectId } = mongoose.Types;
-
 
 class CreateOrUpdateInvoiceValidator {
 
@@ -16,10 +12,6 @@ class CreateOrUpdateInvoiceValidator {
             id: {
                 in: ["body"],
                 optional: true,
-                // isMongoId: {
-                //     bail: true,
-                //     errorMessage: 'فاکتور نامعتبر میباشد.'
-                // },
                 custom: {
                     options: (value, { req }) => {
                         const Invoice = req.wsConnection.model('Invoice');
@@ -31,11 +23,6 @@ class CreateOrUpdateInvoiceValidator {
                     },
                     bail: true
                 },
-                // customSanitizer: {
-                //     options: (value, { req }) => {
-                //         return ObjectId(value);
-                //     }
-                // }
             },
             number: {
                 in: ["body"],
@@ -61,10 +48,6 @@ class CreateOrUpdateInvoiceValidator {
             customer: {
                 in: ["body"],
                 optional: true,
-                // isMongoId: {
-                //     bail: true,
-                //     errorMessage: 'مشتری نامعتبر میباشد.'
-                // },
                 custom: {
                     options: (value, { req }) => {
                         const Person = req.wsConnection.model('Person');
@@ -76,19 +59,10 @@ class CreateOrUpdateInvoiceValidator {
                     },
                     bail: true
                 },
-                // customSanitizer: {
-                //     options: (value, { req }) => {
-                //         return ObjectId(value);
-                //     }
-                // }
             },
             pricing: {
                 in: ["body"],
                 optional: true,
-                // isMongoId: {
-                //     bail: true,
-                //     errorMessage: 'تعرفه نامعتبر میباشد.'
-                // },
                 custom: {
                     options: (value, { req }) => {
                         const Pricing = req.wsConnection.model('Pricing');
@@ -100,11 +74,6 @@ class CreateOrUpdateInvoiceValidator {
                     },
                     bail: true
                 },
-                // customSanitizer: {
-                //     options: (value, { req }) => {
-                //         return ObjectId(value);
-                //     }
-                // }
             },
             // issuedAt: {
             //     in: ["body"],
@@ -122,10 +91,6 @@ class CreateOrUpdateInvoiceValidator {
             },
             'items.*.item': {
                 in: ["body"],
-                // isMongoId: {
-                //     bail: true,
-                //     errorMessage: 'کالا/خدمت نامعتبر میباشد.'
-                // },
                 custom: {
                     options: (value, { req }) => {
                         const Product = req.wsConnection.model('Product');
@@ -137,11 +102,6 @@ class CreateOrUpdateInvoiceValidator {
                     },
                     bail: true
                 },
-                // customSanitizer: {
-                //     options: (value, { req }) => {
-                //         return ObjectId(value);
-                //     }
-                // }
             },
             'items.*.unitPrice': {
                 in: ["body"],
