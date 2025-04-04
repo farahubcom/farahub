@@ -76,6 +76,7 @@ module.exports = {
         require('../modules/products-labels/module'),
         require('../modules/invoices/module'),
         require('../modules/invoices-commissions/module'),
+        require('../modules/invoices-transactions/module'),
         require('../modules/accounting-accounts/module'),
         require('../modules/accounting-documents/module'),
         require('../modules/accounting/module'),
