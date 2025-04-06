@@ -47,15 +47,17 @@ class CreateOrUpdateInvoiceValidator {
             },
             customer: {
                 in: ["body"],
-                optional: true,
                 custom: {
                     options: (value, { req }) => {
+                        if (!value) return Promise.reject('انتخاب مشتری اجباری می‌باشد.')
+
                         const Person = req.wsConnection.model('Person');
                         return Doc.resolve(value, Person).then(person => {
-                            if (!person)
+                            if (!person) {
                                 return Promise.reject('مشتری یافت نشد.');
+                            }
                             return Promise.resolve(true);
-                        })
+                        });
                     },
                     bail: true
                 },
@@ -65,6 +67,8 @@ class CreateOrUpdateInvoiceValidator {
                 optional: true,
                 custom: {
                     options: (value, { req }) => {
+                        if (!Boolean(value)) return Promise.resolve(true);
+
                         const Pricing = req.wsConnection.model('Pricing');
                         return Doc.resolve(value, Pricing).then(pricing => {
                             if (!pricing)
@@ -93,6 +97,8 @@ class CreateOrUpdateInvoiceValidator {
                 in: ["body"],
                 custom: {
                     options: (value, { req }) => {
+                        if (!value) return Promise.reject('انتخاب کالا/خدمت در هر ردیف فاکتور اجباری می‌باشد.')
+
                         const Product = req.wsConnection.model('Product');
                         return Doc.resolve(value, Product).then(product => {
                             if (!product)

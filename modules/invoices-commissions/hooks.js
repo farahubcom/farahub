@@ -9,32 +9,40 @@ const hooks = module => ({
             return {
                 'items.*.member': {
                     in: ["body"],
-                    // isMongoId: {
-                    //     bail: true,
-                    //     errorMessage: 'شخص نامعتبر میباشد.'
-                    // },
+                    optional: true,
                     custom: {
-                        options: (value, { req }) => {
+                        options: (value, { req, path }) => {
                             const Person = req.wsConnection.model('Person');
-                            return Doc.resolve(value, Person).then(person => {
-                                if (!person)
-                                    return Promise.reject('شخص یافت نشد.');
-                                return Promise.resolve(true);
-                            })
+                            const commissonPath = path.replace('member', 'commissonPercent');
+                            const commissonValue = req.body[commissonPath];
+
+                            // If commissonPercent is provided, member is required
+                            if (commissonValue && !value) {
+                                return Promise.reject('عضو اجباری می باشد وقتی پورسانت ارائه شده است.');
+                            }
+
+                            // If member is provided, validate it exists
+                            if (value) {
+                                return Doc.resolve(value, Person).then(person => {
+                                    if (!person) {
+                                        return Promise.reject('کارمند در یک ردیف فاکتور یافت نشد.');
+                                    }
+                                    return Promise.resolve(true);
+                                });
+                            }
+
+                            return Promise.resolve(true);
                         },
                         bail: true
                     },
-                    // customSanitizer: {
-                    //     options: (value, { req }) => {
-                    //         return ObjectId(value);
-                    //     }
-                    // }
                 },
                 'items.*.commissonPercent': {
                     in: ["body"],
-                    isInt: true,
+                    isInt: {
+                        options: { min: 1, max: 100 },
+                        errorMessage: "پورسانت در هر ردیف فاکتور باید بین 1 تا 100 باشد."
+                    },
                     toInt: true,
-                    errorMessage: "پورسانت اجباری می باشد.",
                     optional: true,
                     custom: {
                         options: (value, { req, path }) => {
@@ -42,13 +50,32 @@ const hooks = module => ({
                             const memberValue = req.body[memberPath];
 
                             // If member is provided, commissonPercent is required
-                            if (memberValue && value === undefined) {
-                                throw new Error('پورسانت اجباری می باشد.');
+                            if (memberValue && !Boolean(value)) {
+                                return Promise.reject('پورسانت در هر ردیف فاکتور اجباری می باشد.');
                             }
-                            return true;
+
+                            return Promise.resolve(true);
                         }
                     }
                 },
+                items: {
+                    custom: {
+                        options: (value, { req }) => {
+                            if (!req.body.items) return Promise.resolve(true);
+
+                            // Calculate total commission
+                            const totalCommission = req.body.items.reduce((sum, item) => {
+                                return sum + (item.commissonPercent || 0);
+                            }, 0);
+
+                            if (totalCommission > 100) {
+                                return Promise.reject('مجموع پورسانت‌ها نمی‌تواند بیشتر از ۱۰۰ باشد.');
+                            }
+
+                            return Promise.resolve(true);
+                        }
+                    }
+                }
             }
         },
         'main.details.populate': async () => {
