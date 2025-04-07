@@ -51,25 +51,12 @@ class CreateOrUpdateReservationValidator {
                 optional: true,
                 custom: {
                     options: (value, { req }) => {
+                        if (!value) return Promise.reject('انتخاب مشتری اجباری می‌باشد.');
+
                         const Person = req.wsConnection.model('Person');
                         return Doc.resolve(value, Person).then(person => {
                             if (!person)
                                 return Promise.reject('مشتری یافت نشد.');
-                            return Promise.resolve(true);
-                        })
-                    },
-                    bail: true
-                },
-            },
-            pricing: {
-                in: ["body"],
-                optional: true,
-                custom: {
-                    options: (value, { req }) => {
-                        const Pricing = req.wsConnection.model('Pricing');
-                        return Doc.resolve(value, Pricing).then(pricing => {
-                            if (!pricing)
-                                return Promise.reject('تعرفه یافت نشد.');
                             return Promise.resolve(true);
                         })
                     },
@@ -93,10 +80,12 @@ class CreateOrUpdateReservationValidator {
             'items.*.service': {
                 custom: {
                     options: (value, { req }) => {
+                        if (!value) return Promise.reject('انتخاب خدمت در هر ردیف اجباری می‌باشد.')
+
                         const Product = req.wsConnection.model('Product');
                         return Doc.resolve(value, Product).then(product => {
                             if (!product)
-                                return Promise.reject('کالا/خدمت یافت نشد.');
+                                return Promise.reject('خدمت یافت نشد.');
                             return Promise.resolve(true);
                         })
                     },
@@ -106,6 +95,8 @@ class CreateOrUpdateReservationValidator {
             'items.*.employee': {
                 custom: {
                     options: (value, { req }) => {
+                        if (!value) return Promise.reject('انتخاب کارمند در هر ردیف اجباری می‌باشد.')
+
                         const Person = req.wsConnection.model('Person');
                         return Doc.resolve(value, Person).then(person => {
                             if (!person)
@@ -116,22 +107,30 @@ class CreateOrUpdateReservationValidator {
                     bail: true
                 },
             },
-            'items.*.date': {
+            'items.*.time': {
                 in: ["body"],
-                // isDate: true,
-                // toDate: true,
                 notEmpty: true,
-                errorMessage: "تاریخ اجباری می باشد.",
+                errorMessage: "زمان در هر ردیف اجباری می باشد.",
             },
-            'items.*.from': {
+            'items.*.unitPrice': {
                 in: ["body"],
+                isInt: true,
+                toInt: true,
                 notEmpty: true,
-                errorMessage: "زمان شروع اجباری می باشد.",
+                errorMessage: "قیمت واحد در هر ردیف اجباری می باشد.",
             },
-            'items.*.to': {
+            'items.*.amount': {
                 in: ["body"],
+                isInt: true,
+                toInt: true,
                 notEmpty: true,
-                errorMessage: "زمان پایان اجباری می باشد.",
+                errorMessage: "مقدار در هر ردیف اجباری می باشد.",
+            },
+            'items.*.discount': {
+                in: ["body"],
+                optional: true,
+                isInt: true,
+                toInt: true,
             }
         }
     }

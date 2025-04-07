@@ -84,13 +84,6 @@ class Reservation {
             const customer = await Doc.resolve(data.customer, Person);
             reservation.customer = customer.id;
 
-            // assign pricing
-            if (data.pricing) {
-                const Pricing = this.model('Pricing');
-                const pricing = await Doc.resolve(data.pricing, Pricing);
-                reservation.pricing = pricing.id;
-            }
-
             // attach reservation number and date
             reservation.number = data.number || await this.generateNumber();
             reservation.reservedAt = data.reservedAt ? new Date(data.reservedAt) : new Date();

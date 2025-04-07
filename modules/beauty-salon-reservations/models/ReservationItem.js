@@ -46,8 +46,10 @@ class ReservationItem {
             // assign rest of fields
             Object.keys(
                 pick(data, [
-                    'from',
-                    'to',
+                    'time',
+                    'unitPrice',
+                    'amount',
+                    'discount',
                 ])
             ).forEach(key => {
                 item[key] = data[key];
@@ -67,6 +69,15 @@ class ReservationItem {
         } catch (error) {
             throw error;
         }
+    }
+
+    /**
+     * Get item total
+     * 
+     * @returns {Number}
+     */
+    get total() {
+        return this.unitPrice * (this.amount || 1) - (this.discount || 0);
     }
 }
 

@@ -9,9 +9,10 @@ const ReservationItemSchema = new Schema({
     reservation: { type: ObjectId, ref: 'Reservation', required: true },
     service: { type: ObjectId, ref: 'Product', required: true },
     employee: { type: ObjectId, ref: 'Person', required: true },
-    date: { type: Date, required: true },
-    from: { type: String, required: true },
-    to: { type: String, required: true },
+    time: { type: String, required: true },
+    unitPrice: { type: Number, required: true },
+    amount: { type: Number, required: true },
+    discount: Number,
 }, { collection: "beauty_salon_reservations:reservation_items" });
 
 ReservationItemSchema.pre('save', function (next) {
