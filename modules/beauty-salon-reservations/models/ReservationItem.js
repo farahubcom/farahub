@@ -32,16 +32,16 @@ class ReservationItem {
 
             // assign item service
             const Product = this.model('Product');
-            const service = await Doc.resolve(data.item, Product);
+            const service = await Doc.resolve(data.service, Product);
             item.service = service.id;
 
             // assign item employee
             const Person = this.model('Person');
-            const person = await Doc.resolve(data.item, Person);
+            const person = await Doc.resolve(data.employee, Person);
             item.employee = person.id;
 
             // assign item date
-            reservation.date = data.date ? new Date(data.date) : new Date();
+            item.date = data.date ? new Date(data.date) : new Date();
 
             // assign rest of fields
             Object.keys(

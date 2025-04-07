@@ -1,4 +1,7 @@
+const { Doc } = require('@farahub/framework/facades');
 const mongoose = require("mongoose");
+const pick = require("lodash/pick");
+const sumBy = require('lodash/sumBy');
 
 const { ObjectId } = mongoose.Types;
 
@@ -115,6 +118,32 @@ class Reservation {
             throw error;
         }
     }
+    
+        /**
+         * Get invoice subtotal
+         * 
+         * @returns {Number}
+         */
+        get subtotal() {
+            return sumBy(this.items, (item) => item.total);
+            // return sumBy(this.items, (item) => (item.unitPrice * (item.amount || 1)) - (item.discount || 0));
+        }
+    
+        /**
+         * Get invoice total
+         * 
+         * @returns {Number}
+         */
+        get total() {
+            let subtotal = this.subtotal;
+            return subtotal + (this.factors ? sumBy(this.factors, factor => {
+                return (
+                    factor.unit === 'price' ?
+                        factor.amount :
+                        (factor.amount / 100 * subtotal)
+                ) * (factor.type === 'reducer' ? -1 : 1);
+            }) : 0);
+        }
 }
 
 module.exports = Reservation;
