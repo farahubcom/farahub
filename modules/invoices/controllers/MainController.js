@@ -1,11 +1,12 @@
 const { Controller } = require('@farahub/framework/foundation');
-const { Lang, Auth, Workspace, Injection, Doc, Num, Validator } = require('@farahub/framework/facades');
+const { Lang, Auth, Workspace, Injection, Doc, Num, Validator, Resource } = require('@farahub/framework/facades');
 const mongoose = require('mongoose');
 const isValid = require('date-fns/isValid');
 const fromUnixTime = require('date-fns/fromUnixTime');
 const startOfDay = require("date-fns/startOfDay");
 const endOfDay = require("date-fns/endOfDay");
 const CreateOrUpdateInvoiceValidator = require('../validators/CreateOrUpdateInvoiceValidator');
+const InvoiceListingResource = require('../resources/InvoiceListingResource');
 
 
 const { ObjectId } = mongoose.Types;
@@ -87,6 +88,7 @@ class MainController extends Controller {
             Auth.authenticate('jwt', { session: false }),
             Workspace.resolve(this.app),
             Injection.register(this.module, 'main.list'),
+            Resource.registerRequest(),
             async function (req, res, next) {
                 try {
 
@@ -167,9 +169,10 @@ class MainController extends Controller {
                             .limit(perPage)
                     }
 
-                    let data = await query.lean({ virtuals: true });
+                    // let data = await query.lean({ virtuals: true });
+                    let data = await query.exec();
 
-                    data = Lang.translate(data)
+                    data = await req.toResource(InvoiceListingResource, data);
 
                     return res.json({ ok: true, data, total });
                 } catch (error) {

@@ -7,13 +7,13 @@ const { ObjectId } = mongoose.Types;
 const hooks = (module) => ({
     'Invoices': {
         'main.createOrUpdate.postSave': async ({ invoice, data, invoiceId, connection }) => {
+            const Transaction = connection.model('Transaction');
+            const Client = connection.model('Person');
+
+            const client = await Doc.resolve(invoice.customer, Client);
+            const deposit = data.deposit ? Number(data.deposit) : 0;
+
             if (!data.id) {
-                const Transaction = connection.model('Transaction');
-                const Client = connection.model('Person');
-
-                const client = await Doc.resolve(invoice.customer, Client);
-                const deposit = data.deposit ? Number(data.deposit) : 0;
-
                 if (deposit > 0) {
                     const transaction = await Transaction.createOrUpdate({
                         amount: deposit,
@@ -29,9 +29,23 @@ const hooks = (module) => ({
 
                     await transaction.markPaid();
                 }
-            }
+            } else {
+                const invoiceDepositTranstionQueryFilter = {
+                    referenceModel: 'Invoice',
+                    reference: invoice.id,
+                    type: Transaction.TYPE_RECEIVEABLE,
+                    createdAt: invoice.createdAt,
+                }
 
-            await invoice.calculateRemaining();
+                if (deposit > 0) {
+                    const transaction = await Transaction.findOne(invoiceDepositTranstionQueryFilter);
+
+                    transaction.amount = deposit;
+                    await transaction.save();
+                } else {
+                    await Transaction.deleteOne(invoiceDepositTranstionQueryFilter);
+                }
+            }
         },
         'main.createOrUpdate.validator': () => {
             return {
@@ -51,6 +65,11 @@ const hooks = (module) => ({
                 reference: ObjectId(invoiceId),
             });
         },
+        'main.list.resource': async ({ req, resource }) => {
+            const totalPaid = await resource.getTotalPaid();
+            const remaining = await resource.getRemaining();
+            return { totalPaid, remaining }
+        }
     },
 })
 
