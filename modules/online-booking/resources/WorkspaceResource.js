@@ -8,7 +8,7 @@ class WorkspaceResource {
 
         return {
             id: self._id,
-            name: self.getOption('online-booking:name', self.name),
+            name: self.getOption('online-booking:name', self.name.get('fa-IR')),
             headline: self.getOption('online-booking:headline'),
             about: self.getOption('online-booking:about'),
             tel: self.getOption('online-booking:tel'),
