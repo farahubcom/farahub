@@ -15,7 +15,7 @@ class MainController extends Controller {
      * 
      * @var string
      */
-    basePath = '/';
+    basePath = '';
 
     /**
      * The controller routes

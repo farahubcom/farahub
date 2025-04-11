@@ -5,14 +5,14 @@ const controllers = require('./controllers');
 const hooks = require('./hooks');
 
 
-class BeautySalonReservationsModule extends Module {
+class OnlineBookingModule extends Module {
 
     /**
      * The module name
      * 
      * @var string
      */
-    name = 'Beauty-Salon-Reservations';
+    name = 'Online-Booking';
 
     /**
      * The module version
@@ -28,7 +28,7 @@ class BeautySalonReservationsModule extends Module {
      * 
      * @var string
      */
-    basePath = '';
+    basePath = '/online-booking';
 
     /**
      * The module dependencies
@@ -68,4 +68,4 @@ class BeautySalonReservationsModule extends Module {
     }
 }
 
-module.exports = BeautySalonReservationsModule;
+module.exports = OnlineBookingModule;

@@ -7,15 +7,15 @@ const hooks = module => ({
         'workspace.settings.preSave': async ({ workspace, data }) => {
             
             const modifying = pick(data, [
-                'beauty-salon-reservations:pricing:default',
-                'beauty-salon-reservations:online-booking:name', 
-                'beauty-salon-reservations:online-booking:headline', 
-                'beauty-salon-reservations:online-booking:about', 
-                'beauty-salon-reservations:online-booking:tel',
-                'beauty-salon-reservations:online-booking:website',
-                'beauty-salon-reservations:online-booking:instagram',
-                'beauty-salon-reservations:online-booking:address',
-                'beauty-salon-reservations:online-booking:latlng'
+                'online-booking:pricing:default',
+                'online-booking:name', 
+                'online-booking:headline', 
+                'online-booking:about', 
+                'online-booking:tel',
+                'online-booking:website',
+                'online-booking:instagram',
+                'online-booking:address',
+                'online-booking:latlng'
             ]);
 
             Object.keys(modifying).forEach((key) => {

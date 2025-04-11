@@ -80,7 +80,7 @@ module.exports = {
         require('../modules/accounting-accounts/module'),
         require('../modules/accounting-documents/module'),
         require('../modules/accounting/module'),
-        require('../modules/beauty-salon-reservations/module'),
+        require('../modules/online-booking/module'),
         require('../modules/beauty-salon/module'),
 
         // App module
