@@ -8,7 +8,7 @@ class BookingServiceListingResource {
 
         return {
             id: self._id,
-            name: self.name,
+            name: self.name.get('fa-IR'),
         };
     }
 }
