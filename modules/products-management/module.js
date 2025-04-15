@@ -38,6 +38,7 @@ class ProductsManagementModule extends Module {
      */
     dependencies = [
         'Products',
+        'Labels',
     ];
 
     /**

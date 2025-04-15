@@ -36,6 +36,7 @@ class ServicesModule extends Module {
      */
     dependencies = [
         'Products',
+        'Labels',
     ];
 
     /**
