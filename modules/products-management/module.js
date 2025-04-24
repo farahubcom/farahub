@@ -3,6 +3,7 @@ const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
 const permissions = require('./permissions');
+const hooks = require('./hooks');
 
 
 class ProductsManagementModule extends Module {
@@ -38,6 +39,13 @@ class ProductsManagementModule extends Module {
     dependencies = [
         'Products',
     ];
+
+    /**
+     * The module hooks
+     * 
+     * @var object
+     */
+    hooks = hooks;
 
     /**
      * The module permissions

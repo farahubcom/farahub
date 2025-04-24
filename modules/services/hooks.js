@@ -9,12 +9,6 @@ const hooks = module => ({
 
             return {}
         },
-        // 'main.list.populate': async () => {
-        //     return {
-        //         path: 'roles',
-        //         select: 'name'
-        //     }
-        // },
         'main.createOrUpdate.validate': async () => {
             return {
                 type: {
@@ -24,12 +18,6 @@ const hooks = module => ({
                 },
             }
         },
-        // 'main.details.populate': async () => {
-        //     return {
-        //         path: 'roles',
-        //         select: 'name'
-        //     }
-        // },
         'main.createOrUpdate.preSave': async ({ req, data, connection, inject, product }) => {
             product.type = data.type;
         },
