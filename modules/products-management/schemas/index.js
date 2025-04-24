@@ -1,7 +1,11 @@
 const Product = require('./Product')
 
 const schemas = {
-    Product,
+    'injects': {
+        'Products': {
+            Product
+        }
+    }
 }
 
 module.exports = schemas;

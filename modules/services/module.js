@@ -2,6 +2,7 @@ const { Module } = require('@farahub/framework/foundation');
 const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
+const hooks = require('./hooks');
 
 
 class ServicesModule extends Module {
@@ -36,8 +37,14 @@ class ServicesModule extends Module {
      */
     dependencies = [
         'Products',
-        'Labels',
     ];
+
+    /**
+     * The module hooks
+     * 
+     * @var object
+     */
+    hooks = hooks;
 
     /**
      * Register the module

@@ -69,7 +69,7 @@ const hooks = module => ({
             const Label = req.wsConnection.model('Label');
 
             product.labels = (await Promise.all(
-                data.labels?.filter(Boolean)?.map(
+                (data.labels || [])?.filter(Boolean)?.map(
                     async label => {
                         if (typeof label === "string") {
                             const labelDoc = await Doc.resolveByIdentifier(label, Label);

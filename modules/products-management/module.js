@@ -2,7 +2,6 @@ const { Module } = require('@farahub/framework/foundation');
 const models = require('./models');
 const schemas = require('./schemas');
 const controllers = require('./controllers');
-const listeners = require('./listeners');
 const permissions = require('./permissions');
 
 
@@ -38,7 +37,6 @@ class ProductsManagementModule extends Module {
      */
     dependencies = [
         'Products',
-        'Labels',
     ];
 
     /**
@@ -56,7 +54,6 @@ class ProductsManagementModule extends Module {
     register() {
         this.registerModels(models);
         this.registerSchemas(schemas);
-        this.registerListeners(listeners);
         this.registerControllers(controllers);
     }
 }
