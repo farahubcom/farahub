@@ -81,6 +81,7 @@ module.exports = {
         require('../modules/accounting-documents/module'),
         require('../modules/accounting/module'),
         require('../modules/online-booking/module'),
+        require('../modules/online-booking-transactions/module'),
         require('../modules/beauty-salon/module'),
         require('../modules/products-management/module'),
 
