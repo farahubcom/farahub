@@ -1,2 +1,0 @@
-"use strict";(globalThis.webpackChunkfarahub=globalThis.webpackChunkfarahub||[]).push([[2104],{42104:(a,s,h)=>{h.r(s),h.d(s,{default:()=>b});var r=h(68870),u=h(80184);const b=a=>(0,u.jsx)(r.Z,{sx:{p:2},children:"Board Settings ..."})}}]);
-//# sourceMappingURL=2104.21408ae7.chunk.js.map
