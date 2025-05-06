@@ -32,20 +32,6 @@ class User {
         this.currentWorkspace = workspace.id;
         await this.save();
     }
-
-
-    /**
-     * Get user full name
-     * 
-     * @return string|null
-     */
-    get fullName() {
-        return Boolean(this.firstName) || Boolean(this.lastName) ?
-            join([this.firstName, this.lastName], ' ') :
-            null;
-    };
-
-    //
 }
 
 module.exports = User;

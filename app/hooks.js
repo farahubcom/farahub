@@ -5,15 +5,13 @@ const map = require('lodash/map');
 
 const hooks = module => ({
     'Core': {
-        'workspaces.addOwner.preSave': async ({ data, user }) => {
-            user.firstName = data.first_name;
-            user.lastName = data.last_name;
+        'workspaces.addUser.preSave': async ({ data, user }) => {
+            user.name = data.name;
         },
     },
     'Authentication': Obj.expand({
         'main.register.preSave': async ({ user, data }) => {
-            user.firstName = data.firstName;
-            user.lastName = data.lastName;
+            user.name = data.name;
         },
         'main.login.params, main.getSelf.params': async ({ user }) => {
 

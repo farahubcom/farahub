@@ -1,14 +1,13 @@
 const { Controller } = require('@farahub/framework/foundation');
 const { Auth, Injection, Validator, Lang, Doc, Resource } = require('@farahub/framework/facades');
-const WorkspacesListValidator = require('../validators/WorkspacesListValidator');
 const CreateWorkspaceValidator = require('../validators/CreateWorkspaceValidator');
 const add = require('date-fns/add');
-const uniqBy = require('lodash/uniqBy');
 const map = require('lodash/map');
 const flatten = require('lodash/flatten');
 const uniq = require('lodash/uniq');
 const compact = require('lodash/compact');
 const WorkspaceMembershipListingResource = require('../resources/WorkspaceMembershipListingResource');
+const AddWorkspaceUserValidator = require('../validators/AddWorkspaceUserValidator');
 
 
 class WorkspacesController extends Controller {
@@ -66,8 +65,8 @@ class WorkspacesController extends Controller {
         {
             type: 'api',
             method: 'post',
-            path: '/:workspaceId/add-owner',
-            handler: 'addOwner',
+            path: '/:workspaceId/users',
+            handler: 'addUser',
         },
     ];
 
@@ -119,7 +118,6 @@ class WorkspacesController extends Controller {
         return [
             Auth.authenticate('jwt', { session: false }),
             Injection.register(this.module, 'workspaces.details'),
-            Validator.validate(new WorkspacesListValidator()),
             async function (req, res, next) {
                 try {
                     // const Category = this.app.connection.model('Category');
@@ -277,7 +275,7 @@ class WorkspacesController extends Controller {
         return [
             Auth.authenticate('jwt', { session: false }),
             Injection.register(this.module, 'workspaces.subscribe'),
-            // Validator.validate(new CreateWorkspaceValidator()),
+            Validator.validate(new AddWorkspaceUserValidator(this.app)),
             // Event.register(this.module),
             async function (req, res, next) {
                 try {
@@ -338,7 +336,7 @@ class WorkspacesController extends Controller {
                     const args = req.query;
 
                     let search = {
-                        //
+                        roles: { $exists: true, $ne: [] }
                     };
 
                     const sort = args && args.sort ? args.sort : "-createdAt";
@@ -379,11 +377,11 @@ class WorkspacesController extends Controller {
      * 
      * @return void
      */
-    addOwner() {
+    addUser() {
         return [
             Auth.authenticate('jwt', { session: false }),
-            Injection.register(this.module, 'workspaces.addOwner'),
-            // Validator.validate(new CreateWorkspaceValidator()),
+            Injection.register(this.module, 'workspaces.addUser'),
+            Validator.validate(new AddWorkspaceUserValidator(this.app)),
             // Event.register(this.module),
             async function (req, res, next) {
                 try {
@@ -392,9 +390,10 @@ class WorkspacesController extends Controller {
 
                     const Workspace = this.app.connection.model('Workspace');
                     const User = this.app.connection.model('User');
-                    const Role = this.app.connection.model('Role');
+                    // const Role = this.app.connection.model('Role');
 
-                    const role = await Doc.resolveByIdentifier('owner', Role);
+                    // const role = await Doc.resolveByIdentifier('owner', Role);
+                    return res.json(req.body);
 
                     let user = await User.findOne({ phone: req.body.phone });
                     if (!user) {
@@ -409,7 +408,7 @@ class WorkspacesController extends Controller {
                     const homePaths = compact(map(workspaceCurrentModule, "defaultHomePath"));
                     const homePath = homePaths && homePaths.length > 0 && homePaths[0];
 
-                    await workspace.addMember(user, role, {
+                    await workspace.addMember(user, req.body.roles, {
                         tabBarPins,
                         homePath,
                         options: {

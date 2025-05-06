@@ -1,6 +1,5 @@
 const { Controller } = require('@farahub/framework/foundation');
 const { Auth, Injection, Validator, Lang, FileExplorer, Workspace } = require('@farahub/framework/facades');
-const WorkspacesListValidator = require('../validators/WorkspacesListValidator');
 const map = require('lodash/map');
 const WorkspaceOptionsValidator = require('../validators/WorkspaceOptionsValidator');
 const setWith = require('lodash/setWith');
@@ -114,7 +113,6 @@ class WorkspaceController extends Controller {
             Auth.authenticate('jwt', { session: false }),
             Workspace.resolve(this.app),
             Injection.register(this.module, 'workspaces.details'),
-            Validator.validate(new WorkspacesListValidator()),
             async function (req, res, next) {
                 try {
 

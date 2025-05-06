@@ -6,8 +6,7 @@ const { ObjectId } = mongoose.Types;
 
 
 const UserSchema = new Schema({
-    firstName: String,
-    lastName: String,
+    name: String,
     avatar: String,
     bornAt: Date,
     currentWorkspace: { type: ObjectId, ref: 'Workspace' }
