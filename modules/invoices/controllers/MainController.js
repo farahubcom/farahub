@@ -75,7 +75,6 @@ class MainController extends Controller {
             path: '/:invoiceId',
             handler: 'delete',
         },
-        //
     ]
 
     /**

@@ -1,5 +1,5 @@
 const { Controller } = require('@farahub/framework/foundation');
-const { Auth, Injection, Validator, Lang, Doc } = require('@farahub/framework/facades');
+const { Auth, Injection, Validator, Lang, Doc, Resource } = require('@farahub/framework/facades');
 const WorkspacesListValidator = require('../validators/WorkspacesListValidator');
 const CreateWorkspaceValidator = require('../validators/CreateWorkspaceValidator');
 const add = require('date-fns/add');
@@ -8,6 +8,7 @@ const map = require('lodash/map');
 const flatten = require('lodash/flatten');
 const uniq = require('lodash/uniq');
 const compact = require('lodash/compact');
+const WorkspaceMembershipListingResource = require('../resources/WorkspaceMembershipListingResource');
 
 
 class WorkspacesController extends Controller {
@@ -55,6 +56,12 @@ class WorkspacesController extends Controller {
             method: 'post',
             path: '/:workspaceId/subscribe',
             handler: 'subscribe',
+        },
+        {
+            type: 'api',
+            method: 'get',
+            path: '/:workspaceId/users',
+            handler: 'usersList',
         },
         {
             type: 'api',
@@ -213,7 +220,6 @@ class WorkspacesController extends Controller {
         return [
             Auth.authenticate('jwt', { session: false }),
             Injection.register(this.module, 'main.details'),
-            // Validator.validate(new PersonDetailsValidator()),
             async function (req, res, next) {
                 try {
 
@@ -299,6 +305,65 @@ class WorkspacesController extends Controller {
                     await workspace.save();
 
                     return res.json({ ok: true });
+                } catch (error) {
+                    next(error);
+                }
+            }
+        ]
+    }
+
+    /**
+     * Get the workspace users list
+     * 
+     * @param {*} req request
+     * @param {*} res response
+     * 
+     * @return void
+     */
+    usersList() {
+        return [
+            Auth.authenticate('jwt', { session: false }),
+            Injection.register(this.module, 'workspaces.usersList'),
+            Resource.registerRequest(),
+            async function (req, res, next) {
+                try {
+
+                    const { workspaceId } = req.params;
+
+                    const Workspace = this.app.connection.model('Workspace');
+                    const User = this.app.connection.model('User');
+                    const Role = this.app.connection.model('Role');
+                    const workspace = await Workspace.findById(workspaceId);
+
+                    const args = req.query;
+
+                    let search = {
+                        //
+                    };
+
+                    const sort = args && args.sort ? args.sort : "-createdAt";
+
+                    const query = workspace.memberships(search)
+                        .populate([
+                            { path: 'user', model: User },
+                            { path: 'roles', model: Role },
+                        ]);
+
+                    query.sort(sort);
+
+                    const total = await workspace.memberships(search).count();
+
+                    if (args && args.page > -1) {
+                        const perPage = args.perPage || 25;
+                        query.skip(args.page * perPage)
+                            .limit(perPage)
+                    }
+
+                    let data = await query.exec();
+
+                    data = await req.toResource(WorkspaceMembershipListingResource, data);
+
+                    return res.json({ ok: true, data, total });
                 } catch (error) {
                     next(error);
                 }
